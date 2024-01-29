@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/appearance" />
+            <option value="$PROJECT_DIR$/core/architecture" />
+            <option value="$PROJECT_DIR$/core/cache" />
+            <option value="$PROJECT_DIR$/core/persistence" />
+            <option value="$PROJECT_DIR$/core/utils" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/domain/image-fetch" />
+            <option value="$PROJECT_DIR$/domain/image-fetch/data" />
+            <option value="$PROJECT_DIR$/domain/image-fetch/fetcher-api" />
+            <option value="$PROJECT_DIR$/domain/image-fetch/fetcher-impl" />
+            <option value="$PROJECT_DIR$/domain/image-fetch/lemmy" />
+            <option value="$PROJECT_DIR$/domain/image-fetch/repository" />
+            <option value="$PROJECT_DIR$/domain/image-fetch/usecase" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/drawer" />
+            <option value="$PROJECT_DIR$/feature/imagedetail" />
+            <option value="$PROJECT_DIR$/feature/imagelist" />
+          </set>
+        </option>
+        <option name="resolveExternalAnnotations" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
