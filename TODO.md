@@ -1,6 +1,5 @@
 ## Roadmap
 
-[ ] saving image to gallery (image detail)
 [ ] set image as background through WallpaperManager
 [ ] color scheme preview from image
 [ ] placeholder with shimmer effect

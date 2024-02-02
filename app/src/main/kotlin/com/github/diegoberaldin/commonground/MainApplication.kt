@@ -9,6 +9,7 @@ import com.github.diegoberaldin.commonground.core.appearance.CoreAppearanceModul
 import com.github.diegoberaldin.commonground.core.cache.CoreCacheModule
 import com.github.diegoberaldin.commonground.core.persistence.CorePersistenceModule
 import com.github.diegoberaldin.commonground.core.utils.CoreUtilsModule
+import com.github.diegoberaldin.commonground.domain.gallery.DomainGalleryModule
 import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherimpl.DomainImageFetchFetcherImplModule
 import com.github.diegoberaldin.commonground.domain.imagefetch.lemmy.DomainImageFetchLemmyModule
 import com.github.diegoberaldin.commonground.domain.imagefetch.repository.DomainImageFetchRepositoryModule
@@ -33,6 +34,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 CoreCacheModule().module,
                 CorePersistenceModule().module,
                 CoreUtilsModule().module,
+                DomainGalleryModule().module,
                 DomainImageFetchRepositoryModule().module,
                 DomainImageFetchUseCaseModule().module,
                 DomainImageFetchFetcherImplModule().module,

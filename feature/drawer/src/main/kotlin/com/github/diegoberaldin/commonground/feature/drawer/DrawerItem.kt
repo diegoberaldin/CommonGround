@@ -22,7 +22,7 @@ internal fun DrawerItem(
             .clickable { onSelected?.invoke() }
             .padding(
                 vertical = Spacing.s,
-                horizontal = Spacing.s
+                horizontal = Spacing.m,
             ),
     ) {
         val textColor = if (active) {

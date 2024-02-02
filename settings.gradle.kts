@@ -30,6 +30,7 @@ include(":core:cache")
 include(":core:persistence")
 include(":core:utils")
 
+include(":domain:gallery")
 include(":domain:image-fetch:data")
 include(":domain:image-fetch:fetcher-api")
 include(":domain:image-fetch:fetcher-impl")

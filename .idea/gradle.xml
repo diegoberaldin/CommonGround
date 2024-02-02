@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/core/persistence" />
             <option value="$PROJECT_DIR$/core/utils" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/domain/gallery" />
             <option value="$PROJECT_DIR$/domain/image-fetch" />
             <option value="$PROJECT_DIR$/domain/image-fetch/data" />
             <option value="$PROJECT_DIR$/domain/image-fetch/fetcher-api" />

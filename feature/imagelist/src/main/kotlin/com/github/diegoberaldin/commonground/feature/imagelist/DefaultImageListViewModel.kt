@@ -26,14 +26,6 @@ internal class DefaultImageListViewModel(
     private var imageFetcher: ImageFetcher? =
         null
 
-    override fun onCreate() {
-        super.onCreate()
-        val source: SourceInfoModel? = savedStateHandle["source"]
-        if (source != null) {
-            setSource(source)
-        }
-    }
-
     override fun reduce(intent: ImageListViewModel.Intent) {
         when (intent) {
             is ImageListViewModel.Intent.Load -> {
@@ -65,13 +57,18 @@ internal class DefaultImageListViewModel(
     private fun setSource(source: SourceInfoModel) {
         savedStateHandle["source"] = source
         updateState {
-            it.copy(
-                title = source.name,
-            )
+            it.copy(title = source.name)
         }
         // initialize image fetcher
         imageFetcher = imageFetcherFactory.create(source)
         viewModelScope.launch {
+            emit(ImageListViewModel.Event.BackToTop)
+            updateState {
+                it.copy(
+                    initial = true,
+                    images = emptyList(),
+                )
+            }
             refresh()
         }
     }

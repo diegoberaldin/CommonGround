@@ -71,6 +71,7 @@ dependencies {
     implementation(projects.core.cache)
     implementation(projects.core.persistence)
     implementation(projects.core.utils)
+    implementation(projects.domain.gallery)
     implementation(projects.domain.imageFetch.data)
     implementation(projects.domain.imageFetch.repository)
     implementation(projects.domain.imageFetch.fetcherImpl)

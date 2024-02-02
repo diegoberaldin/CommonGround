@@ -6,6 +6,8 @@ interface ImageDetailViewModel :
     MviModel<ImageDetailViewModel.Intent, ImageDetailViewModel.State, ImageDetailViewModel.Event> {
     sealed interface Intent {
         data class Load(val id: String) : Intent
+
+        data object SaveToGallery : Intent
     }
 
     data class State(
@@ -13,5 +15,7 @@ interface ImageDetailViewModel :
         val url: String = "",
     )
 
-    sealed interface Event
+    sealed interface Event {
+        data object OperationSuccess : Event
+    }
 }

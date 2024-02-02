@@ -54,32 +54,32 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
 
-    private fun NavGraphBuilder.buildNavGraph(
-        navController: NavHostController,
-    ) {
-        composable(NavigationDestination.Home.route) {
-            HomeScreen(
-                onOpenDetail = { imageId ->
-                    navController.navigate(
-                        route = NavigationDestination.ImageDetail.withActualParams(
-                            params = mapOf("id" to imageId)
-                        )
+private fun NavGraphBuilder.buildNavGraph(
+    navController: NavHostController,
+) {
+    composable(NavigationDestination.Home.route) {
+        HomeScreen(
+            onOpenDetail = { imageId ->
+                navController.navigate(
+                    route = NavigationDestination.ImageDetail.withActualParams(
+                        params = mapOf("id" to imageId)
                     )
-                }
-            )
-        }
-        composable(
-            route = NavigationDestination.ImageDetail.route,
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                    nullable = false
-                },
-            )
-        ) {
-            val imageId = it.arguments?.getString("id").orEmpty()
-            ImageDetailScreen(id = imageId)
-        }
+                )
+            }
+        )
+    }
+    composable(
+        route = NavigationDestination.ImageDetail.route,
+        arguments = listOf(
+            navArgument("id") {
+                type = NavType.StringType
+                nullable = false
+            },
+        )
+    ) {
+        val imageId = it.arguments?.getString("id").orEmpty()
+        ImageDetailScreen(id = imageId)
     }
 }

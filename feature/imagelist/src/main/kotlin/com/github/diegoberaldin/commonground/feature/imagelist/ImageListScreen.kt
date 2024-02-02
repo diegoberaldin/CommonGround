@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -60,6 +61,7 @@ fun ImageListScreen(
     val pullRefreshState = rememberPullToRefreshState()
     val topAppBarState = rememberTopAppBarState()
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+    val lazyGridState = rememberLazyGridState()
 
     LaunchedEffect(source) {
         if (source != null) {
@@ -70,6 +72,11 @@ fun ImageListScreen(
         model.events.onEach { event ->
             when (event) {
                 is ImageListViewModel.Event.OpenDetail -> onOpenDetail?.invoke(event.id)
+                ImageListViewModel.Event.BackToTop -> {
+                    lazyGridState.scrollToItem(0)
+                    topAppBarState.heightOffset = 0f
+                    topAppBarState.contentOffset = 0f
+                }
             }
         }.launchIn(this)
     }
@@ -106,7 +113,6 @@ fun ImageListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = Spacing.m, vertical = Spacing.xs)
                 .nestedScroll(pullRefreshState.nestedScrollConnection)
                 .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         ) {
@@ -117,9 +123,10 @@ fun ImageListScreen(
                 )
             }
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 100.dp),
-                verticalArrangement = Arrangement.spacedBy(Spacing.xs),
-                horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
+                state = lazyGridState,
+                columns = GridCells.Adaptive(minSize = 160.dp),
+                verticalArrangement = Arrangement.spacedBy(Spacing.s),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.s),
             ) {
                 if (!uiState.initial && uiState.images.isEmpty() && !uiState.loading) {
                     item {

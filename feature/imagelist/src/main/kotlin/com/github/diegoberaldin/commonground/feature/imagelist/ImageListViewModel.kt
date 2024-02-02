@@ -23,6 +23,8 @@ interface ImageListViewModel :
     )
 
     sealed interface Event {
+
+        data object BackToTop : Event
         data class OpenDetail(val id: String) : Event
     }
 }
