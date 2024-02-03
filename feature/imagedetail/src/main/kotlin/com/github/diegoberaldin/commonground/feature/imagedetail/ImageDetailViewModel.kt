@@ -1,6 +1,7 @@
 package com.github.diegoberaldin.commonground.feature.imagedetail
 
 import com.github.diegoberaldin.commonground.core.architecture.MviModel
+import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 
 interface ImageDetailViewModel :
     MviModel<ImageDetailViewModel.Intent, ImageDetailViewModel.State, ImageDetailViewModel.Event> {
@@ -8,6 +9,8 @@ interface ImageDetailViewModel :
         data class Load(val id: String) : Intent
 
         data object SaveToGallery : Intent
+
+        data class SetBackground(val mode: WallpaperMode) : Intent
     }
 
     data class State(
@@ -17,5 +20,6 @@ interface ImageDetailViewModel :
 
     sealed interface Event {
         data object OperationSuccess : Event
+        data class OperationFailure(val message: String) : Event
     }
 }

@@ -6,6 +6,8 @@ import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
 import com.github.diegoberaldin.commonground.core.cache.ImageModelCache
 import com.github.diegoberaldin.commonground.domain.gallery.GalleryManager
 import com.github.diegoberaldin.commonground.domain.gallery.ImageDownloadManager
+import com.github.diegoberaldin.commonground.domain.gallery.WallpaperManager
+import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -15,6 +17,7 @@ internal class DefaultImageDetailViewModel(
     private val imageModelCache: ImageModelCache,
     private val downloadManager: ImageDownloadManager,
     private val galleryManager: GalleryManager,
+    private val wallpaperManager: WallpaperManager,
 ) : ImageDetailViewModel,
     DefaultMviModel<ImageDetailViewModel.Intent, ImageDetailViewModel.State, ImageDetailViewModel.Event>(
         ImageDetailViewModel.State(),
@@ -27,7 +30,8 @@ internal class DefaultImageDetailViewModel(
                 load(imageId)
             }
 
-            ImageDetailViewModel.Intent.SaveToGallery -> save()
+            ImageDetailViewModel.Intent.SaveToGallery -> saveToGallery()
+            is ImageDetailViewModel.Intent.SetBackground -> setBackground(intent.mode)
         }
     }
 
@@ -45,7 +49,7 @@ internal class DefaultImageDetailViewModel(
         }
     }
 
-    private fun save() {
+    private fun saveToGallery() {
         val url = uiState.value.url.takeIf { it.isNotEmpty() } ?: return
         viewModelScope.launch {
             runCatching {
@@ -54,6 +58,23 @@ internal class DefaultImageDetailViewModel(
                     galleryManager.saveToGallery(bmp)
                 }
                 emit(ImageDetailViewModel.Event.OperationSuccess)
+            }.exceptionOrNull()?.message?.also {
+                emit(ImageDetailViewModel.Event.OperationFailure(it))
+            }
+        }
+    }
+
+    private fun setBackground(mode: WallpaperMode) {
+        val url = uiState.value.url.takeIf { it.isNotEmpty() } ?: return
+        viewModelScope.launch {
+            runCatching {
+                val bmp = downloadManager.getBitmap(url)
+                if (bmp != null) {
+                    wallpaperManager.set(bmp, mode)
+                }
+                emit(ImageDetailViewModel.Event.OperationSuccess)
+            }.exceptionOrNull()?.message?.also {
+                emit(ImageDetailViewModel.Event.OperationFailure(it))
             }
         }
     }

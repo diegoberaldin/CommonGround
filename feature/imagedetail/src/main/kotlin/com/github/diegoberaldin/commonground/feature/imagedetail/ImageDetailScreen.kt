@@ -66,6 +66,10 @@ fun ImageDetailScreen(
                 ImageDetailViewModel.Event.OperationSuccess -> {
                     snackbarHostState.showSnackbar("Operation completed successfully")
                 }
+
+                is ImageDetailViewModel.Event.OperationFailure -> {
+                    snackbarHostState.showSnackbar(event.message)
+                }
             }
         }.launchIn(this)
     }
@@ -103,6 +107,9 @@ fun ImageDetailScreen(
         SelectWallpaperModeModal(
             onSelect = { mode ->
                 wallpaperModalSelectionOpen = false
+                if (mode != null) {
+                    model.accept(ImageDetailViewModel.Intent.SetBackground(mode))
+                }
             }
         )
     }
