@@ -42,6 +42,7 @@ dependencies {
 
     implementation(projects.core.appearance)
     implementation(projects.core.architecture)
+    implementation(projects.core.commonui)
     implementation(projects.core.utils)
     implementation(projects.domain.imageFetch.data)
     implementation(projects.domain.imageFetch.usecase)

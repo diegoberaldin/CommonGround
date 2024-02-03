@@ -42,6 +42,7 @@ dependencies {
     ksp(libs.koin.ksp)
 
     implementation(projects.core.appearance)
+    implementation(projects.core.commonui)
     implementation(projects.core.architecture)
     implementation(projects.core.cache)
     implementation(projects.core.utils)

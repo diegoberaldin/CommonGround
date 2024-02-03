@@ -31,51 +31,58 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.github.diegoberaldin.commonground.core.appearance.theme.CornerSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
+import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.domain.imagefetch.data.ImageModel
-import com.github.diegoberaldin.commonground.domain.imagefetch.data.SourceInfoModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageListScreen(
     modifier: Modifier = Modifier,
-    source: SourceInfoModel? = null,
-    toggleDrawer: (() -> Unit)? = null,
     onOpenDetail: ((String) -> Unit)? = null,
 ) {
     val model: ImageListViewModel = injectViewModel<DefaultImageListViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val pullRefreshState = rememberPullToRefreshState()
-    val topAppBarState = rememberTopAppBarState()
-    val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
     val lazyGridState = rememberLazyGridState()
+    val topAppBarState = rememberTopAppBarState()
+    val topAppBarScrollBehavior =
+        TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+    val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
+    val coroutineScope = rememberCoroutineScope()
+    var topAppBarVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(source) {
-        if (source != null) {
-            model.accept(ImageListViewModel.Intent.Load(source))
-        }
-    }
     LaunchedEffect(model) {
         model.events.onEach { event ->
             when (event) {
                 is ImageListViewModel.Event.OpenDetail -> onOpenDetail?.invoke(event.id)
                 ImageListViewModel.Event.BackToTop -> {
                     lazyGridState.scrollToItem(0)
-                    topAppBarState.heightOffset = 0f
                     topAppBarState.contentOffset = 0f
+                    topAppBarState.heightOffset = 0f
+
                 }
             }
         }.launchIn(this)
@@ -89,30 +96,39 @@ fun ImageListScreen(
     }
 
     Scaffold(
-        modifier = modifier
-            .padding(horizontal = Spacing.s),
         topBar = {
-            TopAppBar(
-                scrollBehavior = topAppBarScrollBehavior,
-                navigationIcon = {
-                    Icon(
-                        modifier = Modifier.clickable {
-                            toggleDrawer?.invoke()
-                        },
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = null,
-                    )
-                },
-                title = {
-                    Text(text = uiState.title)
-                },
-            )
+            if (topAppBarVisible) {
+                TopAppBar(
+                    scrollBehavior = topAppBarScrollBehavior,
+                    navigationIcon = {
+                        Icon(
+                            modifier = Modifier.clickable {
+                                coroutineScope.launch {
+                                    drawerCoordinator.send(DrawerEvent.Toggle)
+                                }
+                            },
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = null,
+                        )
+                    },
+                    title = {
+                        Text(
+                            text = uiState.title,
+                        )
+                    },
+                )
+            }
         },
     ) { padding ->
+        LaunchedEffect(Unit) {
+            // avoid flickering
+            topAppBarVisible = true
+        }
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier
                 .padding(padding)
+                .padding(horizontal = Spacing.xs)
+                .fillMaxSize()
                 .nestedScroll(pullRefreshState.nestedScrollConnection)
                 .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         ) {
@@ -130,7 +146,7 @@ fun ImageListScreen(
             ) {
                 if (!uiState.initial && uiState.images.isEmpty() && !uiState.loading) {
                     item {
-                        Text("No item to display")
+                        Text(text = stringResource(id = commonR.string.message_empty_list))
                     }
                 }
                 items(

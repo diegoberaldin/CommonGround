@@ -20,6 +20,11 @@ private val DEFAULT_SOURCES =
             config = createAsString("sh.itjust.works", "imageai"),
         ),
         SourceInfoModel(
+            name = "EarthPorn",
+            type = SourceType.Lemmy,
+            config = createAsString("lemmy.world", "earthporn"),
+        ),
+        SourceInfoModel(
             name = "Digital Art",
             type = SourceType.Lemmy,
             config = createAsString("lemmy.world", "digitalart"),
@@ -35,9 +40,9 @@ private val DEFAULT_SOURCES =
             config = createAsString("lemmy.world", "traditional_art"),
         ),
         SourceInfoModel(
-            name = "EarthPorn",
+            name = "Accidental Renaissance",
             type = SourceType.Lemmy,
-            config = createAsString("lemmy.world", "earthporn"),
+            config = createAsString("lemmy.world", "AccidentalRenaissance@kbin.social"),
         ),
     )
 

@@ -1,11 +1,16 @@
 ## Roadmap
 
-[ ] set image as background through WallpaperManager
+[ ] add to favorite and favorite section
 [ ] color scheme preview from image
+[ ] share (URL or post)
+[ ] show author
+[ ] image for data source
+[ ] splash screen
 [ ] placeholder with shimmer effect
-[ ] settings screen with theme customization
-[ ] configure new image source on Lemmy
+[ ] settings screen with theme customization, language, resize mode
+[ ] add new image source from Lemmy
+[ ] filters on Lemmy (e. g. keywords)
 [ ] fetch images from Mastodon
-[ ] configure new image source from Mastodon
+[ ] configure image source from Mastodon
 [ ] fetch images from Unsplash with API key
-[ ] configure new image source from Unsplash
+[ ] configure image source from Unsplash

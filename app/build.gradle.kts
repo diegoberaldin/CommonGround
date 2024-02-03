@@ -69,6 +69,7 @@ dependencies {
     implementation(projects.core.architecture)
     implementation(projects.core.appearance)
     implementation(projects.core.cache)
+    implementation(projects.core.commonui)
     implementation(projects.core.persistence)
     implementation(projects.core.utils)
     implementation(projects.domain.gallery)

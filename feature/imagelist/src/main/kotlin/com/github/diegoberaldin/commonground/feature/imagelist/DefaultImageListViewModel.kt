@@ -4,10 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
 import com.github.diegoberaldin.commonground.core.cache.ImageModelCache
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.utils.imagepreload.ImagePreloadManager
 import com.github.diegoberaldin.commonground.domain.imagefetch.data.SourceInfoModel
 import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageFetcher
 import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageFetcherFactory
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import java.util.UUID
@@ -18,6 +21,7 @@ internal class DefaultImageListViewModel(
     private val imageFetcherFactory: ImageFetcherFactory,
     private val imagePreloadManager: ImagePreloadManager,
     private val imageModelCache: ImageModelCache,
+    private val drawerCoordinator: DrawerCoordinator,
 ) : ImageListViewModel,
     DefaultMviModel<ImageListViewModel.Intent, ImageListViewModel.State, ImageListViewModel.Event>(
         ImageListViewModel.State(),
@@ -26,15 +30,19 @@ internal class DefaultImageListViewModel(
     private var imageFetcher: ImageFetcher? =
         null
 
-    override fun reduce(intent: ImageListViewModel.Intent) {
-        when (intent) {
-            is ImageListViewModel.Intent.Load -> {
-                val source = intent.source
-                if (source != savedStateHandle["source"]) {
+    override fun onCreate() {
+        super.onCreate()
+        viewModelScope.launch {
+            drawerCoordinator.imageSource.onEach { source ->
+                if (source != null) {
                     setSource(source)
                 }
-            }
+            }.launchIn(this)
+        }
+    }
 
+    override fun reduce(intent: ImageListViewModel.Intent) {
+        when (intent) {
             ImageListViewModel.Intent.Refresh -> viewModelScope.launch {
                 refresh()
             }
@@ -55,10 +63,8 @@ internal class DefaultImageListViewModel(
     }
 
     private fun setSource(source: SourceInfoModel) {
+        updateState { it.copy(title = source.name) }
         savedStateHandle["source"] = source
-        updateState {
-            it.copy(title = source.name)
-        }
         // initialize image fetcher
         imageFetcher = imageFetcherFactory.create(source)
         viewModelScope.launch {
@@ -94,7 +100,7 @@ internal class DefaultImageListViewModel(
             val currentValues = it.images
             val valuesToAdd = images.filter {
                 isRefreshing || currentValues.none { e -> e.url == it.url }
-            }
+            }.distinctBy { e -> e.url }
             valuesToAdd.forEach { image ->
                 imagePreloadManager.preload(image.url)
             }

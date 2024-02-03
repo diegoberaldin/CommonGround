@@ -2,12 +2,10 @@ package com.github.diegoberaldin.commonground.feature.imagelist
 
 import com.github.diegoberaldin.commonground.core.architecture.MviModel
 import com.github.diegoberaldin.commonground.domain.imagefetch.data.ImageModel
-import com.github.diegoberaldin.commonground.domain.imagefetch.data.SourceInfoModel
 
 interface ImageListViewModel :
     MviModel<ImageListViewModel.Intent, ImageListViewModel.State, ImageListViewModel.Event> {
     sealed interface Intent {
-        data class Load(val source: SourceInfoModel) : Intent
         data object Refresh : Intent
         data object FetchMore : Intent
         data class OpenDetail(val value: ImageModel) : Intent

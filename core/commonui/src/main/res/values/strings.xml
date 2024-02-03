@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_operation_success">Operation completed successfully</string>
+    <string name="message_empty_list">No item to display</string>
+</resources>

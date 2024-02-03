@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
@@ -43,8 +44,8 @@ import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageDetailScreen(
     id: String,
@@ -53,18 +54,17 @@ fun ImageDetailScreen(
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-    var wallpaperModalSelectionOpen by remember {
-        mutableStateOf(false)
-    }
+    var wallpaperModalSelectionOpen by remember { mutableStateOf(false) }
 
     LaunchedEffect(id) {
         model.accept(ImageDetailViewModel.Intent.Load(id))
     }
+    val successMessage = stringResource(id = commonR.string.message_operation_success)
     LaunchedEffect(model) {
         model.events.onEach { event ->
             when (event) {
                 ImageDetailViewModel.Event.OperationSuccess -> {
-                    snackbarHostState.showSnackbar("Operation completed successfully")
+                    snackbarHostState.showSnackbar(successMessage)
                 }
 
                 is ImageDetailViewModel.Event.OperationFailure -> {

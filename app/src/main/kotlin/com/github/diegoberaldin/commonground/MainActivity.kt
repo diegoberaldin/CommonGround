@@ -5,9 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,11 +25,20 @@ import androidx.navigation.navArgument
 import com.github.diegoberaldin.commonground.core.appearance.repository.ThemeRepository
 import com.github.diegoberaldin.commonground.core.appearance.repository.UiTheme
 import com.github.diegoberaldin.commonground.core.appearance.theme.CommonGroundTheme
+import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
+import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
 import com.github.diegoberaldin.commonground.feature.imagedetail.ImageDetailScreen
-import com.github.diegoberaldin.commonground.home.HomeScreen
+import com.github.diegoberaldin.commonground.feature.imagelist.ImageListScreen
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -37,19 +52,55 @@ class MainActivity : ComponentActivity() {
                 themeRepository.changeTheme(uiTheme)
             }
             CommonGroundTheme {
+                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = NavigationDestination.Home.route,
-                    ) {
-                        buildNavGraph(
-                            navController = navController,
-                        )
+                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                    val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
+                    val coroutineScope = rememberCoroutineScope()
+
+                    fun toggleDrawer() {
+                        drawerState.apply {
+                            coroutineScope.launch {
+                                if (isClosed) {
+                                    open()
+                                } else {
+                                    close()
+                                }
+                            }
+                        }
                     }
+
+                    LaunchedEffect(drawerCoordinator) {
+                        drawerCoordinator.events.filterIsInstance<DrawerEvent.Toggle>().onEach {
+                            toggleDrawer()
+                        }.launchIn(this)
+                    }
+
+                    ModalNavigationDrawer(
+                        drawerState = drawerState,
+                        drawerContent = {
+                            ModalDrawerSheet {
+                                DrawerContent(
+                                    modifier = Modifier.padding(
+                                        vertical = Spacing.m,
+                                    ),
+                                )
+                            }
+                        },
+                        content = {
+                            NavHost(
+                                navController = navController,
+                                startDestination = NavigationDestination.Home.route,
+                            ) {
+                                buildNavGraph(
+                                    navController = navController,
+                                )
+                            }
+                        },
+                    )
                 }
             }
         }
@@ -60,7 +111,8 @@ private fun NavGraphBuilder.buildNavGraph(
     navController: NavHostController,
 ) {
     composable(NavigationDestination.Home.route) {
-        HomeScreen(
+        ImageListScreen(
+            modifier = Modifier.fillMaxSize(),
             onOpenDetail = { imageId ->
                 navController.navigate(
                     route = NavigationDestination.ImageDetail.withActualParams(
