@@ -3,13 +3,18 @@ package com.github.diegoberaldin.commonground.feature.imagelist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
-import com.github.diegoberaldin.commonground.core.cache.ImageModelCache
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.core.utils.imagepreload.ImagePreloadManager
-import com.github.diegoberaldin.commonground.domain.imagefetch.data.SourceInfoModel
+import com.github.diegoberaldin.commonground.domain.favorites.repository.FavoriteRepository
+import com.github.diegoberaldin.commonground.domain.imagefetch.cache.ImageModelCache
+import com.github.diegoberaldin.commonground.domain.imagefetch.data.ImageModel
 import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageFetcher
 import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageFetcherFactory
+import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoModel
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
@@ -22,20 +27,33 @@ internal class DefaultImageListViewModel(
     private val imagePreloadManager: ImagePreloadManager,
     private val imageModelCache: ImageModelCache,
     private val drawerCoordinator: DrawerCoordinator,
+    private val favoriteRepository: FavoriteRepository,
 ) : ImageListViewModel,
     DefaultMviModel<ImageListViewModel.Intent, ImageListViewModel.State, ImageListViewModel.Event>(
         ImageListViewModel.State(),
     ) {
 
-    private var imageFetcher: ImageFetcher? =
-        null
+    private var imageFetcher: ImageFetcher? = null
 
     override fun onCreate() {
         super.onCreate()
         viewModelScope.launch {
-            drawerCoordinator.imageSource.onEach { source ->
-                if (source != null) {
+            drawerCoordinator.section
+                .filterIsInstance<DrawerSection.ImageList>()
+                .map { it.source }
+                .onEach { source: SourceInfoModel ->
                     setSource(source)
+                }.launchIn(this)
+
+            favoriteRepository.getAll().onEach { favorites ->
+                updateState {
+                    it.copy(
+                        images = it.images.map { image ->
+                            image.copy(
+                                favorite = favorites.any { f -> f.url == image.url }
+                            )
+                        },
+                    )
                 }
             }.launchIn(this)
         }
@@ -52,17 +70,22 @@ internal class DefaultImageListViewModel(
             }
 
             is ImageListViewModel.Intent.OpenDetail -> {
-                val image = intent.value
+                val image = intent.image
                 val imageId = UUID.randomUUID().toString()
                 viewModelScope.launch {
                     imageModelCache.store(id = imageId, value = image)
                     emit(ImageListViewModel.Event.OpenDetail(imageId))
                 }
             }
+
+            is ImageListViewModel.Intent.ToggleFavorite -> toggleFavorite(intent.image)
         }
     }
 
     private fun setSource(source: SourceInfoModel) {
+        if (source == savedStateHandle["source"]) {
+            return
+        }
         updateState { it.copy(title = source.name) }
         savedStateHandle["source"] = source
         // initialize image fetcher
@@ -95,15 +118,22 @@ internal class DefaultImageListViewModel(
 
         updateState { it.copy(loading = true) }
         val isRefreshing = uiState.value.refreshing
+        val currentValues = uiState.value.images
         val images = fetcher.getNextPage()
-        updateState {
-            val currentValues = it.images
-            val valuesToAdd = images.filter {
+        val valuesToAdd = images
+            .filter {
                 isRefreshing || currentValues.none { e -> e.url == it.url }
-            }.distinctBy { e -> e.url }
-            valuesToAdd.forEach { image ->
-                imagePreloadManager.preload(image.url)
             }
+            .distinctBy { e -> e.url }
+            .map { image ->
+                imagePreloadManager.preload(image.url)
+                val isFavorite = favoriteRepository.isFavorite(image.url)
+                image.copy(
+                    favorite = isFavorite,
+                )
+            }
+
+        updateState {
             it.copy(
                 images = if (isRefreshing) {
                     valuesToAdd
@@ -115,6 +145,29 @@ internal class DefaultImageListViewModel(
                 loading = false,
                 refreshing = false,
             )
+        }
+    }
+
+    private fun toggleFavorite(image: ImageModel) {
+        val newValue = !image.favorite
+        viewModelScope.launch {
+            if (newValue) {
+                favoriteRepository.add(image)
+            } else {
+                favoriteRepository.remove(image.url)
+            }
+
+            updateState {
+                it.copy(
+                    images = it.images.map { e ->
+                        if (e.url == image.url) {
+                            e.copy(favorite = newValue)
+                        } else {
+                            e
+                        }
+                    },
+                )
+            }
         }
     }
 }

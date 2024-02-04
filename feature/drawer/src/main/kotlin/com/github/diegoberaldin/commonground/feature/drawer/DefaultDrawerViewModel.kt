@@ -3,8 +3,9 @@ package com.github.diegoberaldin.commonground.feature.drawer
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
-import com.github.diegoberaldin.commonground.domain.imagefetch.repository.SourceInfoRepository
-import com.github.diegoberaldin.commonground.domain.imagefetch.usecase.source.CreateInitialSourcesUseCase
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
+import com.github.diegoberaldin.commonground.domain.imagesource.repository.SourceInfoRepository
+import com.github.diegoberaldin.commonground.domain.imagesource.usecase.CreateInitialSourcesUseCase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,9 +30,11 @@ class DefaultDrawerViewModel(
                 updateState { it.copy(sources = sources) }
             }.launchIn(this)
 
-            if (drawerCoordinator.imageSource.value == null) {
-                val firstSource = sourceInfoRepository.observeAll().first().firstOrNull()
-                drawerCoordinator.changeImageSource(firstSource)
+            if (drawerCoordinator.section.value == null) {
+                // set first source at startup
+                sourceInfoRepository.observeAll().first().firstOrNull()?.also { source ->
+                    drawerCoordinator.changeSection(DrawerSection.ImageList(source))
+                }
             }
         }
     }

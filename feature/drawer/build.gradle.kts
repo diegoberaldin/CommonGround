@@ -44,9 +44,9 @@ dependencies {
     implementation(projects.core.architecture)
     implementation(projects.core.commonui)
     implementation(projects.core.utils)
-    implementation(projects.domain.imageFetch.data)
-    implementation(projects.domain.imageFetch.usecase)
-    implementation(projects.domain.imageFetch.repository)
+    implementation(projects.domain.imageSource.data)
+    implementation(projects.domain.imageSource.repository)
+    implementation(projects.domain.imageSource.usecase)
 
     testImplementation(libs.junit)
 

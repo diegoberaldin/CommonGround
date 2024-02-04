@@ -41,7 +41,7 @@ dependencies {
     implementation(libs.koin.compose)
     ksp(libs.koin.ksp)
 
-    implementation(projects.domain.imageFetch.data)
+    implementation(projects.domain.imageSource.data)
 
     testImplementation(libs.junit)
 

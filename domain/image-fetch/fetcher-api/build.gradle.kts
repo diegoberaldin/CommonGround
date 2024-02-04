@@ -24,7 +24,9 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.koin)
+
     implementation(projects.domain.imageFetch.data)
+    implementation(projects.domain.imageSource.data)
 
     testImplementation(libs.junit)
 

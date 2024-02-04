@@ -68,17 +68,20 @@ dependencies {
 
     implementation(projects.core.architecture)
     implementation(projects.core.appearance)
-    implementation(projects.core.cache)
     implementation(projects.core.commonui)
     implementation(projects.core.persistence)
     implementation(projects.core.utils)
+
+    implementation(projects.domain.favorites)
     implementation(projects.domain.gallery)
-    implementation(projects.domain.imageFetch.data)
-    implementation(projects.domain.imageFetch.repository)
+    implementation(projects.domain.imageFetch.cache)
     implementation(projects.domain.imageFetch.fetcherImpl)
     implementation(projects.domain.imageFetch.lemmy)
-    implementation(projects.domain.imageFetch.usecase)
+    implementation(projects.domain.imageSource.repository)
+    implementation(projects.domain.imageSource.usecase)
+
     implementation(projects.feature.drawer)
+    implementation(projects.feature.favorites)
     implementation(projects.feature.imagedetail)
     implementation(projects.feature.imagelist)
 

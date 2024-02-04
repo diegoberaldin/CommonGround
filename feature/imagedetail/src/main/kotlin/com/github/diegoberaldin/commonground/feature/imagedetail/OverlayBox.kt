@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Wallpaper
@@ -28,9 +29,11 @@ import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 @Composable
 internal fun OverlayBox(
     title: String,
+    favorite: Boolean,
     modifier: Modifier = Modifier,
     onSave: (() -> Unit)? = null,
     onSet: (() -> Unit)? = null,
+    onToggleFavorite: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
@@ -50,12 +53,16 @@ internal fun OverlayBox(
         verticalArrangement = Arrangement.spacedBy(Spacing.m),
     ) {
         CommandBar(
+            favorite = favorite,
             onSave = {
                 onSave?.invoke()
             },
             onSet = {
                 onSet?.invoke()
             },
+            onToggleFavorite = {
+                onToggleFavorite?.invoke()
+            }
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -71,8 +78,10 @@ internal fun OverlayBox(
 
 @Composable
 private fun CommandBar(
+    favorite: Boolean,
     onSave: () -> Unit,
     onSet: () -> Unit,
+    onToggleFavorite: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -98,8 +107,14 @@ private fun CommandBar(
             tint = MaterialTheme.colorScheme.onBackground,
         )
         Icon(
-            modifier = buttonModifier,
-            imageVector = Icons.Default.FavoriteBorder,
+            modifier = buttonModifier.clickable {
+                onToggleFavorite()
+            },
+            imageVector = if (favorite) {
+                Icons.Default.Favorite
+            } else {
+                Icons.Default.FavoriteBorder
+            },
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onBackground,
         )

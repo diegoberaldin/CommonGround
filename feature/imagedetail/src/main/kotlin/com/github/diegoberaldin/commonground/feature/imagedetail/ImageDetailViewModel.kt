@@ -11,11 +11,13 @@ interface ImageDetailViewModel :
         data object SaveToGallery : Intent
 
         data class SetBackground(val mode: WallpaperMode) : Intent
+        data object ToggleFavorite : Intent
     }
 
     data class State(
         val title: String = "",
         val url: String = "",
+        val favorite: Boolean = false,
     )
 
     sealed interface Event {

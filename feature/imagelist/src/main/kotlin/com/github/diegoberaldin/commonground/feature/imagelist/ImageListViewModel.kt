@@ -8,7 +8,8 @@ interface ImageListViewModel :
     sealed interface Intent {
         data object Refresh : Intent
         data object FetchMore : Intent
-        data class OpenDetail(val value: ImageModel) : Intent
+        data class OpenDetail(val image: ImageModel) : Intent
+        data class ToggleFavorite(val image: ImageModel) : Intent
     }
 
     data class State(
@@ -23,6 +24,6 @@ interface ImageListViewModel :
     sealed interface Event {
 
         data object BackToTop : Event
-        data class OpenDetail(val id: String) : Event
+        data class OpenDetail(val imageId: String) : Event
     }
 }

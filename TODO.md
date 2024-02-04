@@ -1,6 +1,5 @@
 ## Roadmap
 
-[ ] add to favorite and favorite section
 [ ] color scheme preview from image
 [ ] share (URL or post)
 [ ] show author

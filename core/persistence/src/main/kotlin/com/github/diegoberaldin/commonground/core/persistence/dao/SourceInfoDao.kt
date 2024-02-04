@@ -27,7 +27,6 @@ interface SourceInfoDao {
     @Delete
     suspend fun delete(value: SourceInfoEntity)
 
-
     companion object {
         const val TABLE_NAME = "source_info"
     }

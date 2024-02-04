@@ -29,7 +29,7 @@ dependencies {
     ksp(libs.koin.ksp)
 
     implementation(projects.core.utils)
-    implementation(projects.domain.imageFetch.data)
+    implementation(projects.domain.imageSource.data)
     implementation(projects.domain.imageFetch.fetcherApi)
     implementation(projects.domain.imageFetch.lemmy)
 

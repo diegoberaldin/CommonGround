@@ -3,11 +3,12 @@ package com.github.diegoberaldin.commonground.feature.imagedetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
-import com.github.diegoberaldin.commonground.core.cache.ImageModelCache
+import com.github.diegoberaldin.commonground.domain.favorites.repository.FavoriteRepository
 import com.github.diegoberaldin.commonground.domain.gallery.GalleryManager
 import com.github.diegoberaldin.commonground.domain.gallery.ImageDownloadManager
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperManager
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
+import com.github.diegoberaldin.commonground.domain.imagefetch.cache.ImageModelCache
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -18,6 +19,7 @@ internal class DefaultImageDetailViewModel(
     private val downloadManager: ImageDownloadManager,
     private val galleryManager: GalleryManager,
     private val wallpaperManager: WallpaperManager,
+    private val favoriteRepository: FavoriteRepository,
 ) : ImageDetailViewModel,
     DefaultMviModel<ImageDetailViewModel.Intent, ImageDetailViewModel.State, ImageDetailViewModel.Event>(
         ImageDetailViewModel.State(),
@@ -32,6 +34,7 @@ internal class DefaultImageDetailViewModel(
 
             ImageDetailViewModel.Intent.SaveToGallery -> saveToGallery()
             is ImageDetailViewModel.Intent.SetBackground -> setBackground(intent.mode)
+            ImageDetailViewModel.Intent.ToggleFavorite -> toggleFavorite()
         }
     }
 
@@ -43,6 +46,7 @@ internal class DefaultImageDetailViewModel(
                     it.copy(
                         title = image.title,
                         url = image.url,
+                        favorite = image.favorite,
                     )
                 }
             }
@@ -75,6 +79,21 @@ internal class DefaultImageDetailViewModel(
                 emit(ImageDetailViewModel.Event.OperationSuccess)
             }.exceptionOrNull()?.message?.also {
                 emit(ImageDetailViewModel.Event.OperationFailure(it))
+            }
+        }
+    }
+
+    private fun toggleFavorite() {
+        val id: String? = savedStateHandle["id"]
+        val newValue = !uiState.value.favorite
+        viewModelScope.launch {
+            imageModelCache.retrieve(id.orEmpty())?.also { image ->
+                if (newValue) {
+                    favoriteRepository.add(image)
+                } else {
+                    favoriteRepository.remove(image.url)
+                }
+                updateState { it.copy(favorite = newValue) }
             }
         }
     }

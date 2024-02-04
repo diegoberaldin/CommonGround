@@ -85,12 +85,16 @@ fun ImageDetailScreen(
         OverlayBox(
             modifier = Modifier.align(Alignment.BottomCenter),
             title = uiState.title,
+            favorite = uiState.favorite,
             onSave = {
                 model.accept(ImageDetailViewModel.Intent.SaveToGallery)
             },
             onSet = {
                 wallpaperModalSelectionOpen = true
-            }
+            },
+            onToggleFavorite = {
+                model.accept(ImageDetailViewModel.Intent.ToggleFavorite)
+            },
         )
 
         SnackbarHost(
@@ -163,10 +167,11 @@ private fun SelectWallpaperModeModal(
 }
 
 private val WallpaperMode.title: String
+    @Composable
     get() = when (this) {
-        WallpaperMode.Both -> "Both"
-        WallpaperMode.HomeScreen -> "Home screen"
-        WallpaperMode.LockScreen -> "Lock screen"
+        WallpaperMode.Both -> stringResource(id = commonR.string.wallpaper_mode_both)
+        WallpaperMode.HomeScreen -> stringResource(id = commonR.string.wallpaper_mode_home_screen)
+        WallpaperMode.LockScreen -> stringResource(id = commonR.string.wallpaper_mode_lock_screen)
     }
 
 private val WallpaperMode.icon: ImageVector

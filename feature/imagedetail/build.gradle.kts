@@ -44,11 +44,12 @@ dependencies {
 
     implementation(projects.core.appearance)
     implementation(projects.core.architecture)
-    implementation(projects.core.cache)
     implementation(projects.core.commonui)
     implementation(projects.core.utils)
+    implementation(projects.domain.favorites)
     implementation(projects.domain.gallery)
     implementation(projects.domain.imageFetch.data)
+    implementation(projects.domain.imageFetch.cache)
 
     testImplementation(libs.junit)
 

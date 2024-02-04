@@ -1,10 +1,8 @@
 package com.github.diegoberaldin.commonground.feature.imagelist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CircularProgressIndicator
@@ -37,20 +34,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.github.diegoberaldin.commonground.core.appearance.theme.CornerSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
-import com.github.diegoberaldin.commonground.domain.imagefetch.data.ImageModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -77,7 +69,7 @@ fun ImageListScreen(
     LaunchedEffect(model) {
         model.events.onEach { event ->
             when (event) {
-                is ImageListViewModel.Event.OpenDetail -> onOpenDetail?.invoke(event.id)
+                is ImageListViewModel.Event.OpenDetail -> onOpenDetail?.invoke(event.imageId)
                 ImageListViewModel.Event.BackToTop -> {
                     lazyGridState.scrollToItem(0)
                     topAppBarState.contentOffset = 0f
@@ -159,6 +151,9 @@ fun ImageListScreen(
                             model.accept(ImageListViewModel.Intent.OpenDetail(image))
                         },
                         image = image,
+                        onFavoriteTap = {
+                            model.accept(ImageListViewModel.Intent.ToggleFavorite(image))
+                        },
                     )
                 }
                 item {
@@ -194,27 +189,5 @@ fun ImageListScreen(
                 state = pullRefreshState,
             )
         }
-    }
-}
-
-@Composable
-internal fun ImageCard(
-    image: ImageModel,
-    modifier: Modifier = Modifier,
-) {
-    val shape = RoundedCornerShape(CornerSize.m)
-    Box(
-        modifier = modifier
-            .background(color = MaterialTheme.colorScheme.secondary, shape = shape)
-            .clip(shape)
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(0.75f),
-            model = image.url,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-        )
     }
 }

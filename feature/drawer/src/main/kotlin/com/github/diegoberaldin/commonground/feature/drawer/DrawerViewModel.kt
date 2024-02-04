@@ -1,7 +1,7 @@
 package com.github.diegoberaldin.commonground.feature.drawer
 
 import com.github.diegoberaldin.commonground.core.architecture.MviModel
-import com.github.diegoberaldin.commonground.domain.imagefetch.data.SourceInfoModel
+import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoModel
 
 interface DrawerViewModel :
     MviModel<DrawerViewModel.Intent, DrawerViewModel.State, DrawerViewModel.Event> {

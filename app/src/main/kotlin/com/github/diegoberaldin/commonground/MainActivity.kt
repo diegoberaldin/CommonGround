@@ -28,11 +28,12 @@ import com.github.diegoberaldin.commonground.core.appearance.theme.CommonGroundT
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
+import com.github.diegoberaldin.commonground.feature.favorites.FavoritesScreen
 import com.github.diegoberaldin.commonground.feature.imagedetail.ImageDetailScreen
 import com.github.diegoberaldin.commonground.feature.imagelist.ImageListScreen
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -48,19 +49,20 @@ class MainActivity : ComponentActivity() {
                 UiTheme.Light
             }
             val themeRepository = rememberByInjection<ThemeRepository>()
+            val navController = rememberNavController()
+            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+            val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
+            val coroutineScope = rememberCoroutineScope()
+
             LaunchedEffect(themeRepository) {
                 themeRepository.changeTheme(uiTheme)
             }
+
             CommonGroundTheme {
-                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                    val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
-                    val coroutineScope = rememberCoroutineScope()
-
                     fun toggleDrawer() {
                         drawerState.apply {
                             coroutineScope.launch {
@@ -74,8 +76,24 @@ class MainActivity : ComponentActivity() {
                     }
 
                     LaunchedEffect(drawerCoordinator) {
-                        drawerCoordinator.events.filterIsInstance<DrawerEvent.Toggle>().onEach {
-                            toggleDrawer()
+                        drawerCoordinator.events.onEach { event ->
+                            when (event) {
+                                DrawerEvent.Toggle -> toggleDrawer()
+                            }
+
+                        }.launchIn(this)
+                        drawerCoordinator.section.onEach { section ->
+                            when (section) {
+                                is DrawerSection.ImageList -> navController.navigate(
+                                    route = NavigationDestination.Home.route
+                                )
+
+                                DrawerSection.Favorites -> navController.navigate(
+                                    route = NavigationDestination.Favorites.route
+                                )
+
+                                else -> Unit
+                            }
                         }.launchIn(this)
                     }
 
@@ -112,14 +130,13 @@ private fun NavGraphBuilder.buildNavGraph(
 ) {
     composable(NavigationDestination.Home.route) {
         ImageListScreen(
-            modifier = Modifier.fillMaxSize(),
             onOpenDetail = { imageId ->
                 navController.navigate(
                     route = NavigationDestination.ImageDetail.withActualParams(
                         params = mapOf("id" to imageId)
                     )
                 )
-            }
+            },
         )
     }
     composable(
@@ -133,5 +150,18 @@ private fun NavGraphBuilder.buildNavGraph(
     ) {
         val imageId = it.arguments?.getString("id").orEmpty()
         ImageDetailScreen(id = imageId)
+    }
+    composable(
+        route = NavigationDestination.Favorites.route,
+    ) {
+        FavoritesScreen(
+            onOpenDetail = { imageId ->
+                navController.navigate(
+                    route = NavigationDestination.ImageDetail.withActualParams(
+                        params = mapOf("id" to imageId)
+                    )
+                )
+            },
+        )
     }
 }
