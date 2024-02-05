@@ -127,9 +127,8 @@ internal class DefaultImageListViewModel(
             .distinctBy { e -> e.url }
             .map { image ->
                 imagePreloadManager.preload(image.url)
-                val isFavorite = favoriteRepository.isFavorite(image.url)
                 image.copy(
-                    favorite = isFavorite,
+                    favorite = favoriteRepository.isFavorite(image.url),
                 )
             }
 
@@ -155,18 +154,6 @@ internal class DefaultImageListViewModel(
                 favoriteRepository.add(image)
             } else {
                 favoriteRepository.remove(image.url)
-            }
-
-            updateState {
-                it.copy(
-                    images = it.images.map { e ->
-                        if (e.url == image.url) {
-                            e.copy(favorite = newValue)
-                        } else {
-                            e
-                        }
-                    },
-                )
             }
         }
     }

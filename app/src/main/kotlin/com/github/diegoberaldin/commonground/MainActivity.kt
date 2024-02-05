@@ -84,15 +84,23 @@ class MainActivity : ComponentActivity() {
                         }.launchIn(this)
                         drawerCoordinator.section.onEach { section ->
                             when (section) {
-                                is DrawerSection.ImageList -> navController.navigate(
-                                    route = NavigationDestination.Home.route
-                                )
+                                is DrawerSection.ImageList -> {
+                                    navController.popUntilRoot()
+                                    navController.navigate(
+                                        route = NavigationDestination.Home.route
+                                    )
+                                }
 
-                                DrawerSection.Favorites -> navController.navigate(
-                                    route = NavigationDestination.Favorites.route
-                                )
+                                DrawerSection.Favorites -> {
+                                    navController.popUntilRoot()
+                                    navController.navigate(
+                                        route = NavigationDestination.Favorites.route
+                                    )
+                                }
 
-                                else -> Unit
+                                else -> {
+                                    Unit
+                                }
                             }
                         }.launchIn(this)
                     }
@@ -156,6 +164,7 @@ private fun NavGraphBuilder.buildNavGraph(
     ) {
         FavoritesScreen(
             onOpenDetail = { imageId ->
+                navController.popUntilRoot()
                 navController.navigate(
                     route = NavigationDestination.ImageDetail.withActualParams(
                         params = mapOf("id" to imageId)
@@ -163,5 +172,12 @@ private fun NavGraphBuilder.buildNavGraph(
                 )
             },
         )
+    }
+}
+
+private fun NavHostController.popUntilRoot() {
+    var empty = false
+    while (!empty) {
+        empty = !popBackStack()
     }
 }
