@@ -108,6 +108,7 @@ fun ImageListScreen(
                     title = {
                         Text(
                             text = uiState.title,
+                            style = MaterialTheme.typography.titleLarge,
                         )
                     },
                 )

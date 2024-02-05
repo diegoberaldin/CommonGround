@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
@@ -162,7 +161,7 @@ private fun SelectWallpaperModeModal(
                     )
                     Text(
                         text = value.title,
-                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
+                        style = MaterialTheme.typography.titleLarge,
                     )
                 }
             }

@@ -2,13 +2,25 @@ package com.github.diegoberaldin.commonground.core.appearance.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.github.diegoberaldin.commonground.core.appearance.R
 
-// Set of Material typography styles to start with
+private val ExoFontFamily = FontFamily(
+    listOf(
+        Font(R.font.exo_regular),
+        Font(R.font.exo_italic),
+        Font(R.font.exo_bold),
+        Font(R.font.exo_bolditalic),
+        Font(R.font.exo_light),
+        Font(R.font.exo_lightitalic),
+    )
+)
+
 fun getTypography(): Typography {
-    val fontFamily = FontFamily.Default
+    val fontFamily = ExoFontFamily
     return Typography(
         // h1
         displayLarge = TextStyle(
@@ -49,7 +61,7 @@ fun getTypography(): Typography {
         titleLarge = TextStyle(
             fontFamily = fontFamily,
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
+            fontSize = 18.sp,
             letterSpacing = (0.15).sp,
         ),
         // subtitle1
