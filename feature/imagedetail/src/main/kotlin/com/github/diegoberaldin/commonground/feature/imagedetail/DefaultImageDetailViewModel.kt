@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
+import com.github.diegoberaldin.commonground.core.utils.share.ShareHelper
 import com.github.diegoberaldin.commonground.domain.favorites.repository.FavoriteRepository
 import com.github.diegoberaldin.commonground.domain.gallery.GalleryManager
 import com.github.diegoberaldin.commonground.domain.gallery.ImageDownloadManager
@@ -25,6 +26,7 @@ internal class DefaultImageDetailViewModel(
     private val favoriteRepository: FavoriteRepository,
     private val paletteGenerator: PaletteGenerator,
     private val paletteCache: PaletteCache,
+    private val shareHelper: ShareHelper,
 ) : ImageDetailViewModel,
     DefaultMviModel<ImageDetailViewModel.Intent, ImageDetailViewModel.State, ImageDetailViewModel.Event>(
         ImageDetailViewModel.State(),
@@ -40,6 +42,7 @@ internal class DefaultImageDetailViewModel(
             ImageDetailViewModel.Intent.SaveToGallery -> saveToGallery()
             is ImageDetailViewModel.Intent.SetBackground -> setBackground(intent.mode)
             ImageDetailViewModel.Intent.ToggleFavorite -> toggleFavorite()
+            ImageDetailViewModel.Intent.Share -> share()
         }
     }
 
@@ -123,5 +126,10 @@ internal class DefaultImageDetailViewModel(
             }
         }.orEmpty()
         updateState { it.copy(previewColors = colors) }
+    }
+
+    private fun share() {
+        val url = uiState.value.url.takeIf { it.isNotEmpty() } ?: return
+        shareHelper.share(url)
     }
 }

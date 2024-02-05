@@ -13,6 +13,7 @@ interface ImageDetailViewModel :
 
         data class SetBackground(val mode: WallpaperMode) : Intent
         data object ToggleFavorite : Intent
+        data object Share : Intent
     }
 
     data class State(
