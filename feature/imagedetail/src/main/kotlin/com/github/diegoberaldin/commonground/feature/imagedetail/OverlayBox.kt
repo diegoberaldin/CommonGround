@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.SaveAlt
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,7 @@ internal fun OverlayBox(
     onSave: (() -> Unit)? = null,
     onSet: (() -> Unit)? = null,
     onToggleFavorite: (() -> Unit)? = null,
+    onShare: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
@@ -68,7 +70,10 @@ internal fun OverlayBox(
             },
             onToggleFavorite = {
                 onToggleFavorite?.invoke()
-            }
+            },
+            onShare = {
+                onShare?.invoke()
+            },
         )
         PalettePreview(
             colors = previewColors,
@@ -92,6 +97,7 @@ private fun CommandBar(
     onSave: () -> Unit,
     onSet: () -> Unit,
     onToggleFavorite: () -> Unit,
+    onShare: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -100,6 +106,14 @@ private fun CommandBar(
         val buttonModifier = Modifier
             .size(IconSize.l)
             .padding(Spacing.xxs)
+        Icon(
+            modifier = buttonModifier.clickable {
+                onShare()
+            },
+            imageVector = Icons.Default.Share,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onBackground,
+        )
         Icon(
             modifier = buttonModifier.clickable {
                 onSave()

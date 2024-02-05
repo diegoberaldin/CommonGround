@@ -96,6 +96,9 @@ fun ImageDetailScreen(
             onToggleFavorite = {
                 model.accept(ImageDetailViewModel.Intent.ToggleFavorite)
             },
+            onShare = {
+                model.accept(ImageDetailViewModel.Intent.Share)
+            },
         )
 
         SnackbarHost(

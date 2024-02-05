@@ -1,6 +1,5 @@
 ## Roadmap
 
-- [ ] share image (URL)
 - [ ] thumbnail for data source (community image)
 - [ ] splash screen
 - [ ] placeholder with shimmer effect
