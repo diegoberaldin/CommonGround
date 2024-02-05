@@ -1,5 +1,6 @@
 package com.github.diegoberaldin.commonground.feature.imagedetail
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
@@ -9,6 +10,8 @@ import com.github.diegoberaldin.commonground.domain.gallery.ImageDownloadManager
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperManager
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 import com.github.diegoberaldin.commonground.domain.imagefetch.cache.ImageModelCache
+import com.github.diegoberaldin.commonground.domain.palette.PaletteCache
+import com.github.diegoberaldin.commonground.domain.palette.PaletteGenerator
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -20,6 +23,8 @@ internal class DefaultImageDetailViewModel(
     private val galleryManager: GalleryManager,
     private val wallpaperManager: WallpaperManager,
     private val favoriteRepository: FavoriteRepository,
+    private val paletteGenerator: PaletteGenerator,
+    private val paletteCache: PaletteCache,
 ) : ImageDetailViewModel,
     DefaultMviModel<ImageDetailViewModel.Intent, ImageDetailViewModel.State, ImageDetailViewModel.Event>(
         ImageDetailViewModel.State(),
@@ -49,6 +54,7 @@ internal class DefaultImageDetailViewModel(
                         favorite = image.favorite,
                     )
                 }
+                generatePalette()
             }
         }
     }
@@ -96,5 +102,26 @@ internal class DefaultImageDetailViewModel(
                 updateState { it.copy(favorite = newValue) }
             }
         }
+    }
+
+    private suspend fun generatePalette() {
+        val url = uiState.value.url.takeIf { it.isNotEmpty() } ?: return
+        val palette = paletteCache.get(url) ?: run {
+            val bitmap = downloadManager.getBitmap(url) ?: return@run null
+            paletteGenerator.generatePalette(bitmap)
+        }
+        val colors = palette?.let {
+            listOf(
+                it.lightVibrantSwatch,
+                it.lightMutedSwatch,
+                it.vibrantSwatch,
+                it.mutedSwatch,
+                it.darkVibrantSwatch,
+                it.darkMutedSwatch,
+            ).mapNotNull { swatch ->
+                swatch?.rgb?.let { rgb -> Color(rgb) }
+            }
+        }.orEmpty()
+        updateState { it.copy(previewColors = colors) }
     }
 }

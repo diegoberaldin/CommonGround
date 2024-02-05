@@ -79,6 +79,7 @@ dependencies {
     implementation(projects.domain.imageFetch.lemmy)
     implementation(projects.domain.imageSource.repository)
     implementation(projects.domain.imageSource.usecase)
+    implementation(projects.domain.palette)
 
     implementation(projects.feature.drawer)
     implementation(projects.feature.favorites)

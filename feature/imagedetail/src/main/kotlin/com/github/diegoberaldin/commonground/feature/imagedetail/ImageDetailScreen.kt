@@ -86,6 +86,7 @@ fun ImageDetailScreen(
             modifier = Modifier.align(Alignment.BottomCenter),
             title = uiState.title,
             favorite = uiState.favorite,
+            previewColors = uiState.previewColors,
             onSave = {
                 model.accept(ImageDetailViewModel.Intent.SaveToGallery)
             },

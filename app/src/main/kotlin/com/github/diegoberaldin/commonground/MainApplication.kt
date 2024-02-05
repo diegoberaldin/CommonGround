@@ -16,6 +16,7 @@ import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherimpl.Domai
 import com.github.diegoberaldin.commonground.domain.imagefetch.lemmy.DomainImageFetchLemmyModule
 import com.github.diegoberaldin.commonground.domain.imagesource.repository.DomainImageSourceRepositoryModule
 import com.github.diegoberaldin.commonground.domain.imagesource.usecase.DomainImageSourceUseCaseModule
+import com.github.diegoberaldin.commonground.domain.palette.DomainPaletteModule
 import com.github.diegoberaldin.commonground.feature.drawer.FeatureDrawerModule
 import com.github.diegoberaldin.commonground.feature.favorites.FeatureFavoritesModule
 import com.github.diegoberaldin.commonground.feature.imagedetail.FeatureImageDetailModule
@@ -43,6 +44,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 DomainImageFetchLemmyModule().module,
                 DomainImageSourceRepositoryModule().module,
                 DomainImageSourceUseCaseModule().module,
+                DomainPaletteModule().module,
 
                 FeatureDrawerModule().module,
                 FeatureFavoritesModule().module,
