@@ -1,5 +1,6 @@
 package com.github.diegoberaldin.commonground.feature.imagedetail
 
+import androidx.compose.ui.graphics.Color
 import com.github.diegoberaldin.commonground.core.architecture.MviModel
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 
@@ -18,6 +19,7 @@ interface ImageDetailViewModel :
         val title: String = "",
         val url: String = "",
         val favorite: Boolean = false,
+        val previewColors: List<Color> = emptyList(),
     )
 
     sealed interface Event {
