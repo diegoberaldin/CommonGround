@@ -6,6 +6,7 @@ androidx-junit = "1.1.5"
 androidx-lifecycle = "2.7.0"
 androidx-navigation = "2.7.6"
 androidx-palette = "1.0.0"
+androidx-splashscreen = "1.0.1"
 coil = "2.5.0"
 compose-bom = "2024.01.00"
 compose-compiler = "1.5.8"
@@ -41,6 +42,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx_splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
 
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
