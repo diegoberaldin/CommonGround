@@ -43,6 +43,8 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordina
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
+import com.github.diegoberaldin.commonground.feature.imagelist.components.ImageCard
+import com.github.diegoberaldin.commonground.feature.imagelist.components.ImageCardPlaceholder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -124,13 +126,8 @@ fun ImageListScreen(
                 .nestedScroll(pullRefreshState.nestedScrollConnection)
                 .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         ) {
-            if (uiState.initial) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
             LazyVerticalGrid(
+                modifier = Modifier.fillMaxSize(),
                 state = lazyGridState,
                 columns = GridCells.Adaptive(minSize = 160.dp),
                 verticalArrangement = Arrangement.spacedBy(Spacing.s),
@@ -139,6 +136,11 @@ fun ImageListScreen(
                 if (!uiState.initial && uiState.images.isEmpty() && !uiState.loading) {
                     item {
                         Text(text = stringResource(id = commonR.string.message_empty_list))
+                    }
+                }
+                if (uiState.initial) {
+                    items(6) {
+                        ImageCardPlaceholder()
                     }
                 }
                 items(

@@ -1,4 +1,4 @@
-package com.github.diegoberaldin.commonground.feature.imagelist
+package com.github.diegoberaldin.commonground.feature.favorites.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +23,7 @@ import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.domain.imagefetch.data.ImageModel
 
 @Composable
-internal fun ImageCard(
+internal fun FavoriteCard(
     image: ImageModel,
     modifier: Modifier = Modifier,
     onFavoriteTap: () -> Unit,

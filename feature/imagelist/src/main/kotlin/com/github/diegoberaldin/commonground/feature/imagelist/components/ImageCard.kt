@@ -1,4 +1,4 @@
-package com.github.diegoberaldin.commonground.feature.favorites
+package com.github.diegoberaldin.commonground.feature.imagelist.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
