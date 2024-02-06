@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -91,17 +92,17 @@ internal fun SourceItem(
                     },
                     content = {
                         options.forEach { option ->
-                            Text(
-                                modifier = Modifier
-                                    .padding(
-                                        horizontal = Spacing.m,
-                                        vertical = Spacing.s,
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = option.text,
+                                        style = MaterialTheme.typography.bodyMedium,
                                     )
-                                    .clickable {
-                                        optionsExpanded = false
-                                        onOptionSelected?.invoke(option.id)
-                                    },
-                                text = option.text,
+                                },
+                                onClick = {
+                                    optionsExpanded = false
+                                    onOptionSelected?.invoke(option.id)
+                                }
                             )
                         }
                     },
