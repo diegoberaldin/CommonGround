@@ -30,12 +30,14 @@
             <option value="$PROJECT_DIR$/domain/image-source/repository" />
             <option value="$PROJECT_DIR$/domain/image-source/usecase" />
             <option value="$PROJECT_DIR$/domain/palette" />
+            <option value="$PROJECT_DIR$/domain/settings" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/drawer" />
             <option value="$PROJECT_DIR$/feature/favorites" />
             <option value="$PROJECT_DIR$/feature/imagedetail" />
             <option value="$PROJECT_DIR$/feature/imagelist" />
             <option value="$PROJECT_DIR$/feature/settings" />
+            <option value="$PROJECT_DIR$/feature/settings/config-sources" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

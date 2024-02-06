@@ -8,7 +8,7 @@ interface SettingsViewModel :
     MviModel<SettingsViewModel.Intent, SettingsViewModel.State, SettingsViewModel.Event> {
     sealed interface Intent {
         data class ChangeTheme(val theme: UiTheme) : Intent
-        data class ChangeResizeMode(val resizeMode: ResizeMode) : Intent
+        data class ChangeResizeMode(val resizeMode: ResizeMode?) : Intent
     }
 
     data class State(

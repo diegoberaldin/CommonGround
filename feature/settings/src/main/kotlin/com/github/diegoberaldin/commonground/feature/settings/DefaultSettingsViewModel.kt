@@ -47,7 +47,7 @@ internal class DefaultSettingsViewModel(
         }
     }
 
-    private fun updateResizeMode(resizeMode: ResizeMode) {
+    private fun updateResizeMode(resizeMode: ResizeMode?) {
         viewModelScope.launch {
             val settings = settingsRepository.current.value.copy(resizeMode = resizeMode)
             settingsRepository.update(settings)

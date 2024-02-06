@@ -124,11 +124,11 @@ fun ImageDetailScreen(
 
     if (wallpaperModalSelectionOpen) {
         SelectWallpaperModeModal(
-            onSelect = { mode ->
+            onDismiss = {
                 wallpaperModalSelectionOpen = false
-                if (mode != null) {
-                    model.accept(ImageDetailViewModel.Intent.SetBackground(mode))
-                }
+            },
+            onSelect = { mode ->
+                model.accept(ImageDetailViewModel.Intent.SetBackground(mode))
             }
         )
     }
@@ -137,7 +137,8 @@ fun ImageDetailScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun SelectWallpaperModeModal(
-    onSelect: (WallpaperMode?) -> Unit,
+    onSelect: (WallpaperMode) -> Unit,
+    onDismiss: () -> Unit,
 ) {
     val values = listOf(
         WallpaperMode.HomeScreen,
@@ -148,7 +149,7 @@ private fun SelectWallpaperModeModal(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.navigationBars),
         onDismissRequest = {
-            onSelect(null)
+            onDismiss()
         },
     ) {
         Column(
@@ -160,6 +161,7 @@ private fun SelectWallpaperModeModal(
                         .fillMaxWidth()
                         .clickable {
                             onSelect(value)
+                            onDismiss()
                         }
                         .padding(
                             horizontal = Spacing.m,
