@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -125,28 +126,28 @@ fun ConfigSourcesScreen(
                                 },
                                 content = {
                                     options.forEach { option ->
-                                        Text(
-                                            modifier = Modifier
-                                                .padding(
-                                                    horizontal = Spacing.m,
-                                                    vertical = Spacing.s,
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(
+                                                    text = option.text,
+                                                    style = MaterialTheme.typography.bodyMedium,
                                                 )
-                                                .clickable {
-                                                    optionsExpanded = false
-                                                    when (option.id) {
-                                                        OptionId.Add -> {
-                                                            editedSource = null
-                                                            createModalBottomSheetOpen = true
-                                                        }
-
-                                                        OptionId.Reset -> {
-                                                            model.accept(ConfigSourcesViewModel.Intent.ResetAll)
-                                                        }
-
-                                                        else -> Unit
+                                            },
+                                            onClick = {
+                                                optionsExpanded = false
+                                                when (option.id) {
+                                                    OptionId.Add -> {
+                                                        editedSource = null
+                                                        createModalBottomSheetOpen = true
                                                     }
-                                                },
-                                            text = option.text,
+
+                                                    OptionId.Reset -> {
+                                                        model.accept(ConfigSourcesViewModel.Intent.ResetAll)
+                                                    }
+
+                                                    else -> Unit
+                                                }
+                                            }
                                         )
                                     }
                                 },

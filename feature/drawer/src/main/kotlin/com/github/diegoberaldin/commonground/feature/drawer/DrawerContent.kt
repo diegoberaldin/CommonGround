@@ -17,6 +17,8 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
+import com.github.diegoberaldin.commonground.feature.drawer.components.ImageListDrawerItem
+import com.github.diegoberaldin.commonground.feature.drawer.components.StaticDrawerItem
 import kotlinx.coroutines.launch
 import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
