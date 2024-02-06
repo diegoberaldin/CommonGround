@@ -38,17 +38,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
+import com.github.diegoberaldin.commonground.core.l10n.localized
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
 @Composable
 fun ImageDetailScreen(
@@ -70,7 +69,7 @@ fun ImageDetailScreen(
     LaunchedEffect(id) {
         model.accept(ImageDetailViewModel.Intent.Load(id))
     }
-    val successMessage = stringResource(id = commonR.string.message_operation_success)
+    val successMessage = "message_operation_success".localized()
     LaunchedEffect(model) {
         model.events.onEach { event ->
             when (event) {
@@ -187,11 +186,10 @@ private fun SelectWallpaperModeModal(
 }
 
 private val WallpaperMode.title: String
-    @Composable
     get() = when (this) {
-        WallpaperMode.Both -> stringResource(id = commonR.string.wallpaper_mode_both)
-        WallpaperMode.HomeScreen -> stringResource(id = commonR.string.wallpaper_mode_home_screen)
-        WallpaperMode.LockScreen -> stringResource(id = commonR.string.wallpaper_mode_lock_screen)
+        WallpaperMode.Both -> "wallpaper_mode_both".localized()
+        WallpaperMode.HomeScreen -> "wallpaper_mode_home_screen".localized()
+        WallpaperMode.LockScreen -> "wallpaper_mode_lock_screen".localized()
     }
 
 private val WallpaperMode.icon: ImageVector

@@ -10,17 +10,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
+import com.github.diegoberaldin.commonground.core.l10n.localized
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.feature.drawer.components.ImageListDrawerItem
 import com.github.diegoberaldin.commonground.feature.drawer.components.StaticDrawerItem
 import kotlinx.coroutines.launch
-import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
 @Composable
 fun DrawerContent(
@@ -59,7 +58,7 @@ fun DrawerContent(
         }
         item {
             StaticDrawerItem(
-                title = stringResource(id = commonR.string.menu_item_favorites),
+                title = "menu_item_favorites".localized(),
                 active = currentSection == DrawerSection.Favorites,
                 onSelected = {
                     drawerCoordinator.changeSection(DrawerSection.Favorites)
@@ -79,7 +78,7 @@ fun DrawerContent(
         }
         item {
             StaticDrawerItem(
-                title = stringResource(id = commonR.string.menu_item_settings),
+                title = "menu_item_settings".localized(),
                 active = currentSection == DrawerSection.Settings,
                 onSelected = {
                     drawerCoordinator.changeSection(DrawerSection.Settings)

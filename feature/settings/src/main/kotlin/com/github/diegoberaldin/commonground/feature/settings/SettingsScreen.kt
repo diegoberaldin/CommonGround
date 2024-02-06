@@ -43,19 +43,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import com.github.diegoberaldin.commonground.core.appearance.repository.UiTheme
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
+import com.github.diegoberaldin.commonground.core.l10n.localized
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.domain.gallery.ResizeMode
 import com.github.diegoberaldin.commonground.feature.settings.components.SettingsHeader
 import com.github.diegoberaldin.commonground.feature.settings.components.SettingsRow
 import kotlinx.coroutines.launch
-import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,6 +71,7 @@ fun SettingsScreen(
     val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
     val coroutineScope = rememberCoroutineScope()
     var themeBottomSheetOpen by remember { mutableStateOf(false) }
+    var languageBottomSheetOpen by remember { mutableStateOf(false) }
     var resizeModeBottomSheetOpen by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -92,7 +92,7 @@ fun SettingsScreen(
                 },
                 title = {
                     Text(
-                        text = stringResource(commonR.string.menu_item_settings),
+                        text = "menu_item_settings".localized(),
                         style = MaterialTheme.typography.titleLarge,
                     )
                 },
@@ -112,29 +112,36 @@ fun SettingsScreen(
             ) {
                 SettingsHeader(
                     icon = Icons.Default.Style,
-                    title = stringResource(commonR.string.settings_header_look_and_feel),
+                    title = "settings_header_look_and_feel".localized(),
                 )
                 SettingsRow(
-                    title = stringResource(commonR.string.settings_item_theme),
+                    title = "settings_item_theme".localized(),
                     value = uiState.theme.toReadableString(),
                     onTap = {
                         themeBottomSheetOpen = true
                     },
                 )
+                SettingsRow(
+                    title = "settings_item_language".localized(),
+                    value = uiState.lang.toLanguageName(),
+                    onTap = {
+                        languageBottomSheetOpen = true
+                    },
+                )
 
                 SettingsHeader(
                     icon = Icons.Default.Settings,
-                    title = stringResource(commonR.string.settings_header_behavior),
+                    title = "settings_header_behavior".localized(),
                 )
                 SettingsRow(
-                    title = stringResource(commonR.string.settings_item_config_sources),
+                    title = "settings_item_config_sources".localized(),
                     disclosureIndicator = true,
                     onTap = {
                         onConfigSources()
                     }
                 )
                 SettingsRow(
-                    title = stringResource(commonR.string.settings_item_resize_mode),
+                    title = "settings_item_resize_mode".localized(),
                     value = uiState.resizeMode.toReadableString(),
                     onTap = {
                         resizeModeBottomSheetOpen = true
@@ -151,6 +158,17 @@ fun SettingsScreen(
             },
             onSelected = { value ->
                 model.accept(SettingsViewModel.Intent.ChangeTheme(value))
+            },
+        )
+    }
+
+    if (languageBottomSheetOpen) {
+        LanguageBottomSheet(
+            onDismiss = {
+                languageBottomSheetOpen = false
+            },
+            onSelected = { lang ->
+                model.accept(SettingsViewModel.Intent.ChangeLanguage(lang))
             },
         )
     }
@@ -220,6 +238,51 @@ private fun SelectThemeBottomSheet(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
+private fun LanguageBottomSheet(
+    onSelected: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    ModalBottomSheet(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+        onDismissRequest = {
+            onDismiss()
+        },
+    ) {
+        val values = listOf(
+            "en",
+            "it"
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            for (value in values) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onSelected(value)
+                            onDismiss()
+                        }
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    Text(
+                        text = value.toLanguageName(),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(Spacing.m))
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun ResizeModeBottomSheet(
     onSelected: (ResizeMode?) -> Unit,
     onDismiss: () -> Unit,
@@ -266,11 +329,10 @@ private fun ResizeModeBottomSheet(
     }
 }
 
-@Composable
 private fun UiTheme.toReadableString(): String = when (this) {
-    UiTheme.Black -> stringResource(commonR.string.settings_theme_black)
-    UiTheme.Dark -> stringResource(commonR.string.settings_theme_dark)
-    UiTheme.Light -> stringResource(commonR.string.settings_theme_light)
+    UiTheme.Black -> "settings_theme_black".localized()
+    UiTheme.Dark -> "settings_theme_dark".localized()
+    UiTheme.Light -> "settings_theme_light".localized()
 }
 
 @Composable
@@ -280,11 +342,15 @@ private fun UiTheme.toIcon(): ImageVector = when (this) {
     UiTheme.Light -> Icons.Default.LightMode
 }
 
-@Composable
 private fun ResizeMode?.toReadableString(): String = when (this) {
-    ResizeMode.Crop -> stringResource(id = commonR.string.resize_mode_crop)
-    ResizeMode.FitHeight -> stringResource(id = commonR.string.resize_mode_fit_height)
-    ResizeMode.FitWidth -> stringResource(id = commonR.string.resize_mode_fit_width)
-    ResizeMode.Zoom -> stringResource(id = commonR.string.resize_mode_zoom)
-    else -> stringResource(id = commonR.string.resize_mode_none)
+    ResizeMode.Crop -> "resize_mode_crop".localized()
+    ResizeMode.FitHeight -> "resize_mode_fit_height".localized()
+    ResizeMode.FitWidth -> "resize_mode_fit_width".localized()
+    ResizeMode.Zoom -> "resize_mode_zoom".localized()
+    else -> "resize_mode_none".localized()
+}
+
+private fun String?.toLanguageName(): String = when (this) {
+    "it" -> "language_it".localized()
+    else -> "language_en".localized()
 }

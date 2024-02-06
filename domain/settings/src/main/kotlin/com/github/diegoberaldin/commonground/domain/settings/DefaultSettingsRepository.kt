@@ -37,12 +37,14 @@ internal class DefaultSettingsRepository(
 private fun SettingsEntity.toModel() = SettingsModel(
     theme = theme?.toUiTheme(),
     resizeMode = resizeMode?.toResizeMode(),
+    lang = lang,
 )
 
 private fun SettingsModel.toEntity() = SettingsEntity(
     id = 1,
     theme = theme?.toInt(),
     resizeMode = resizeMode?.toInt(),
+    lang = lang,
 )
 
 private fun UiTheme.toInt(): Int = when (this) {

@@ -31,14 +31,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
+import com.github.diegoberaldin.commonground.core.l10n.localized
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,8 +49,8 @@ internal fun EditSourceBottomSheet(
     val model: EditSourceViewModel = injectViewModel<DefaultEditSourceViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
-    val invalidConfigError = stringResource(commonR.string.message_invalid_fields)
-    val missingFieldsError = stringResource(commonR.string.message_missing_fields)
+    val invalidConfigError = "message_invalid_fields".localized()
+    val missingFieldsError = "message_missing_fields".localized()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(model) {
@@ -103,7 +102,7 @@ internal fun EditSourceBottomSheet(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = stringResource(commonR.string.edit_source_field_type),
+                        text = "edit_source_field_type".localized(),
                         style = MaterialTheme.typography.bodyLarge,
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -148,7 +147,7 @@ internal fun EditSourceBottomSheet(
                         model.accept(EditSourceViewModel.Intent.Submit)
                     },
                 ) {
-                    Text(text = stringResource(commonR.string.button_ok))
+                    Text(text = "button_ok".localized())
                 }
 
                 Spacer(modifier = Modifier.height(Spacing.m))

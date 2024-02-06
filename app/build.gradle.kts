@@ -70,6 +70,7 @@ dependencies {
     implementation(projects.core.architecture)
     implementation(projects.core.appearance)
     implementation(projects.core.commonui)
+    implementation(projects.core.l10n)
     implementation(projects.core.persistence)
     implementation(projects.core.utils)
 

@@ -27,6 +27,7 @@ include(":app")
 include(":core:appearance")
 include(":core:architecture")
 include(":core:commonui")
+include(":core:l10n")
 include(":core:persistence")
 include(":core:utils")
 

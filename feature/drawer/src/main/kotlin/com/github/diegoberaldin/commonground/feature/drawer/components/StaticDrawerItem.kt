@@ -14,6 +14,7 @@ internal fun StaticDrawerItem(
     onSelected: (() -> Unit)? = null,
 ) {
     NavigationDrawerItem(
+        modifier = modifier,
         label = {
             val textColor = if (active) {
                 MaterialTheme.colorScheme.primary

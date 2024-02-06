@@ -27,18 +27,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
+import com.github.diegoberaldin.commonground.core.l10n.localized
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.feature.favorites.components.FavoriteCard
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +82,7 @@ fun FavoritesScreen(
                     },
                     title = {
                         Text(
-                            text = stringResource(id = commonR.string.menu_item_favorites),
+                            text = "menu_item_favorites".localized()
                         )
                     },
                 )
@@ -110,7 +109,7 @@ fun FavoritesScreen(
             ) {
                 if (!uiState.initial && uiState.images.isEmpty()) {
                     item {
-                        Text(text = stringResource(id = commonR.string.message_empty_list))
+                        Text(text = "message_empty_list".localized())
                     }
                 }
                 items(
