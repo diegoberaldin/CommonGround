@@ -6,7 +6,9 @@ import com.github.diegoberaldin.commonground.domain.gallery.ResizeMode
 
 interface SettingsViewModel :
     MviModel<SettingsViewModel.Intent, SettingsViewModel.State, SettingsViewModel.Event> {
-    sealed interface Intent
+    sealed interface Intent {
+        data class ChangeTheme(val theme: UiTheme) : Intent
+    }
 
     data class State(
         val theme: UiTheme = UiTheme.Dark,
