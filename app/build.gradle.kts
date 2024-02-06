@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.github.diegoberaldin.commonground"
-    compileSdk = 34
+    compileSdk = libs.versions.app.targetSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.github.diegoberaldin.commonground"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.app.minSdk.get().toInt()
+        targetSdk = libs.versions.app.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0.0"
 

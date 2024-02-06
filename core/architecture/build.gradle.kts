@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "com.github.diegoberaldin.commonground.core.architecture"
-    compileSdk = 34
+    compileSdk = libs.versions.app.targetSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.app.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
