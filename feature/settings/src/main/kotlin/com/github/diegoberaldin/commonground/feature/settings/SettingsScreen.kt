@@ -51,6 +51,7 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordina
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
+import com.github.diegoberaldin.commonground.domain.gallery.ResizeMode
 import com.github.diegoberaldin.commonground.feature.settings.components.SettingsHeader
 import com.github.diegoberaldin.commonground.feature.settings.components.SettingsRow
 import kotlinx.coroutines.launch
@@ -71,6 +72,7 @@ fun SettingsScreen(
     val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
     val coroutineScope = rememberCoroutineScope()
     var themeBottomSheetOpen by remember { mutableStateOf(false) }
+    var resizeModeBottomSheetOpen by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -133,18 +135,35 @@ fun SettingsScreen(
                 )
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_resize_mode),
+                    value = uiState.resizeMode.toReadableString(),
+                    onTap = {
+                        resizeModeBottomSheetOpen = true
+                    }
                 )
             }
         }
     }
 
     if (themeBottomSheetOpen) {
-        SelectThemeBottomSheet(onSelected = { value ->
-            themeBottomSheetOpen = false
-            if (value != null) {
-                model.accept(SettingsViewModel.Intent.ChangeTheme(value))
-            }
-        })
+        SelectThemeBottomSheet(
+            onSelected = { value ->
+                themeBottomSheetOpen = false
+                if (value != null) {
+                    model.accept(SettingsViewModel.Intent.ChangeTheme(value))
+                }
+            },
+        )
+    }
+
+    if (resizeModeBottomSheetOpen) {
+        ResizeModeBottomSheet(
+            onSelected = { value ->
+                resizeModeBottomSheetOpen = false
+                if (value != null) {
+                    model.accept(SettingsViewModel.Intent.ChangeResizeMode(value))
+                }
+            },
+        )
     }
 }
 
@@ -165,7 +184,6 @@ private fun SelectThemeBottomSheet(
             UiTheme.Black,
         )
         Column(
-            modifier = Modifier.padding(horizontal = Spacing.m),
             verticalArrangement = Arrangement.spacedBy(Spacing.xs),
         ) {
             for (value in values) {
@@ -175,7 +193,10 @@ private fun SelectThemeBottomSheet(
                         .clickable {
                             onSelected(value)
                         }
-                        .padding(vertical = Spacing.s),
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.m),
                 ) {
@@ -184,6 +205,52 @@ private fun SelectThemeBottomSheet(
                         imageVector = value.toIcon(),
                         contentDescription = null,
                     )
+                    Text(
+                        text = value.toReadableString(),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(Spacing.m))
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ResizeModeBottomSheet(
+    onSelected: (ResizeMode?) -> Unit,
+) {
+    ModalBottomSheet(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+        onDismissRequest = {
+            onSelected(null)
+        },
+    ) {
+        val values = listOf(
+            ResizeMode.Crop,
+            ResizeMode.FitHeight,
+            ResizeMode.FitWidth,
+            ResizeMode.Zoom,
+            null,
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            for (value in values) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onSelected(value)
+                        }
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
                     Text(
                         text = value.toReadableString(),
                         style = MaterialTheme.typography.titleLarge,
@@ -207,4 +274,13 @@ private fun UiTheme.toIcon(): ImageVector = when (this) {
     UiTheme.Black -> Icons.Default.DarkMode
     UiTheme.Dark -> Icons.Outlined.DarkMode
     UiTheme.Light -> Icons.Default.LightMode
+}
+
+@Composable
+private fun ResizeMode?.toReadableString(): String = when (this) {
+    ResizeMode.Crop -> stringResource(id = commonR.string.resize_mode_crop)
+    ResizeMode.FitHeight -> stringResource(id = commonR.string.resize_mode_fit_height)
+    ResizeMode.FitWidth -> stringResource(id = commonR.string.resize_mode_fit_width)
+    ResizeMode.Zoom -> stringResource(id = commonR.string.resize_mode_zoom)
+    else -> stringResource(id = commonR.string.resize_mode_none)
 }

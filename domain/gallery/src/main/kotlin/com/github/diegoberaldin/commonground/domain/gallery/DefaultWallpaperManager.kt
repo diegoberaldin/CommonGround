@@ -20,15 +20,20 @@ import android.app.WallpaperManager as AndroidWallpaperManager
 internal class DefaultWallpaperManager(
     private val context: Context,
 ) : WallpaperManager {
-    override suspend fun set(bitmap: Bitmap, mode: WallpaperMode) = withContext(Dispatchers.IO) {
+
+    override suspend fun set(
+        bitmap: Bitmap,
+        wallpaperMode: WallpaperMode,
+        resizeMode: ResizeMode?,
+    ) = withContext(Dispatchers.IO) {
         val result = run {
-            resizeBitmap(bitmap)
+            resizeBitmap(bitmap, resizeMode)
         }
 
-        if (mode in listOf(WallpaperMode.Both, WallpaperMode.HomeScreen)) {
+        if (wallpaperMode in listOf(WallpaperMode.Both, WallpaperMode.HomeScreen)) {
             setWallpaperUp(result, AndroidWallpaperManager.FLAG_SYSTEM)
         }
-        if (mode in listOf(WallpaperMode.Both, WallpaperMode.LockScreen)) {
+        if (wallpaperMode in listOf(WallpaperMode.Both, WallpaperMode.LockScreen)) {
             setWallpaperUp(result, AndroidWallpaperManager.FLAG_LOCK)
         }
     }

@@ -30,6 +30,7 @@ internal class DefaultSettingsRepository(
 
     override suspend fun update(value: SettingsModel) = withContext(Dispatchers.IO) {
         daoProvider.settings.insert(value.toEntity())
+        current.value = value
     }
 }
 

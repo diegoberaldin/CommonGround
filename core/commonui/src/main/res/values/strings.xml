@@ -17,6 +17,11 @@
     <string name="message_operation_success">Operation completed successfully</string>
     <string name="settings_header_behavior">Behaviour</string>
     <string name="settings_header_look_and_feel">Look and feel</string>
+    <string name="resize_mode_crop">Crop</string>
+    <string name="resize_mode_fit_height">Fit Height</string>
+    <string name="resize_mode_fit_width">Fit width</string>
+    <string name="resize_mode_none">None</string>
+    <string name="resize_mode_zoom">Zoom</string>
     <string name="settings_item_config_sources">Configure sources</string>
     <string name="settings_item_resize_mode">Image resize mode</string>
     <string name="settings_item_theme">Theme</string>

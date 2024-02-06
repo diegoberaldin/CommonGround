@@ -152,7 +152,6 @@ private fun SelectWallpaperModeModal(
         },
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = Spacing.m),
             verticalArrangement = Arrangement.spacedBy(Spacing.xs),
         ) {
             for (value in values) {
@@ -162,7 +161,10 @@ private fun SelectWallpaperModeModal(
                         .clickable {
                             onSelect(value)
                         }
-                        .padding(vertical = Spacing.s),
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s,
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.m),
                 ) {
