@@ -41,6 +41,7 @@ include(":domain:image-source:data")
 include(":domain:image-source:repository")
 include(":domain:image-source:usecase")
 include(":domain:palette")
+include(":domain:settings")
 
 include(":feature:drawer")
 include(":feature:favorites")

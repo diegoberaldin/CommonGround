@@ -18,11 +18,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Style
 import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -204,7 +204,7 @@ private fun UiTheme.toReadableString(): String = when (this) {
 
 @Composable
 private fun UiTheme.toIcon(): ImageVector = when (this) {
-    UiTheme.Black -> Icons.Outlined.DarkMode
-    UiTheme.Dark -> Icons.Default.DarkMode
-    UiTheme.Light -> Icons.Outlined.LightMode
+    UiTheme.Black -> Icons.Default.DarkMode
+    UiTheme.Dark -> Icons.Outlined.DarkMode
+    UiTheme.Light -> Icons.Default.LightMode
 }

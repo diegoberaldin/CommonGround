@@ -18,4 +18,5 @@ internal class DefaultDaoProvider(
 
     override val sourceInfo = appDatabase.sourceInfoDao()
     override val favorite = appDatabase.favoriteDao()
+    override val settings = appDatabase.settingsDao()
 }

@@ -81,6 +81,7 @@ dependencies {
     implementation(projects.domain.imageSource.repository)
     implementation(projects.domain.imageSource.usecase)
     implementation(projects.domain.palette)
+    implementation(projects.domain.settings)
 
     implementation(projects.feature.drawer)
     implementation(projects.feature.favorites)

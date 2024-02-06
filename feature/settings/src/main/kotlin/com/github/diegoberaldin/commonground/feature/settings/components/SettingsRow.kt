@@ -32,7 +32,7 @@ fun SettingsRow(
                 onTap?.invoke()
             }
             .padding(
-                vertical = Spacing.s,
+                vertical = Spacing.m,
                 horizontal = Spacing.m
             ),
         verticalAlignment = Alignment.CenterVertically,
@@ -42,7 +42,7 @@ fun SettingsRow(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             if (subtitle != null) {
@@ -57,7 +57,7 @@ fun SettingsRow(
             Text(
                 modifier = Modifier.padding(start = Spacing.xs),
                 text = annotatedValue,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -66,7 +66,7 @@ fun SettingsRow(
             Text(
                 modifier = Modifier.padding(start = Spacing.xs),
                 text = value,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

@@ -5,7 +5,8 @@ import org.koin.core.annotation.Single
 
 @Single
 internal class DefaultThemeRepository : ThemeRepository {
-    override val theme = MutableStateFlow<UiTheme>(UiTheme.Light)
+
+    override val theme = MutableStateFlow<UiTheme?>(null)
 
     override fun changeTheme(value: UiTheme) {
         theme.value = value
