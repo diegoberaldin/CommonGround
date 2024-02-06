@@ -16,6 +16,10 @@
 
 A simple app to change the background of your device with images from the Fediverse (e.g. Lemmy).
 
+This project wouldn't exist without [WallYou](https://github.com/you-apps/WallYou) from YouApps,
+which provides a wider range of sources and features (e.g. automatic background carousels from
+multiple sources, etc.).
+
 <img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/30734230-23b8-407e-829c-c96aa43105f6" alt="home screen" width="310" />
 <img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/95d15098-ba54-4a84-8720-ec4cebb9f267" alt="image detail screen" width="310" />
 <img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/77caa228-5b09-40e1-9ebf-fd42162cdced" alt="sidebar" width="310" />
