@@ -6,6 +6,7 @@ internal sealed class NavigationDestination(val route: String) {
     data object ImageDetail : NavigationDestination("image/{id}")
 
     data object Favorites : NavigationDestination("favorites")
+    data object Settings : NavigationDestination("settings")
 
     fun withActualParams(params: Map<String, Any>): String {
         var res = route

@@ -35,6 +35,7 @@ import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
 import com.github.diegoberaldin.commonground.feature.favorites.FavoritesScreen
 import com.github.diegoberaldin.commonground.feature.imagedetail.ImageDetailScreen
 import com.github.diegoberaldin.commonground.feature.imagelist.ImageListScreen
+import com.github.diegoberaldin.commonground.feature.settings.SettingsScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -97,6 +98,13 @@ class MainActivity : ComponentActivity() {
                                     navController.popUntilRoot()
                                     navController.navigate(
                                         route = NavigationDestination.Favorites.route
+                                    )
+                                }
+
+                                DrawerSection.Settings -> {
+                                    navController.popUntilRoot()
+                                    navController.navigate(
+                                        route = NavigationDestination.Settings.route
                                     )
                                 }
 
@@ -173,6 +181,11 @@ private fun NavGraphBuilder.buildNavGraph(
                 )
             },
         )
+    }
+    composable(
+        route = NavigationDestination.Settings.route,
+    ) {
+        SettingsScreen()
     }
 }
 
