@@ -146,22 +146,22 @@ fun SettingsScreen(
 
     if (themeBottomSheetOpen) {
         SelectThemeBottomSheet(
-            onSelected = { value ->
+            onDismiss = {
                 themeBottomSheetOpen = false
-                if (value != null) {
-                    model.accept(SettingsViewModel.Intent.ChangeTheme(value))
-                }
+            },
+            onSelected = { value ->
+                model.accept(SettingsViewModel.Intent.ChangeTheme(value))
             },
         )
     }
 
     if (resizeModeBottomSheetOpen) {
         ResizeModeBottomSheet(
-            onSelected = { value ->
+            onDismiss = {
                 resizeModeBottomSheetOpen = false
-                if (value != null) {
-                    model.accept(SettingsViewModel.Intent.ChangeResizeMode(value))
-                }
+            },
+            onSelected = { value ->
+                model.accept(SettingsViewModel.Intent.ChangeResizeMode(value))
             },
         )
     }
@@ -170,12 +170,13 @@ fun SettingsScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun SelectThemeBottomSheet(
-    onSelected: (UiTheme?) -> Unit,
+    onSelected: (UiTheme) -> Unit,
+    onDismiss: () -> Unit,
 ) {
     ModalBottomSheet(
         modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
         onDismissRequest = {
-            onSelected(null)
+            onDismiss()
         },
     ) {
         val values = listOf(
@@ -192,6 +193,7 @@ private fun SelectThemeBottomSheet(
                         .fillMaxWidth()
                         .clickable {
                             onSelected(value)
+                            onDismiss()
                         }
                         .padding(
                             horizontal = Spacing.m,
@@ -220,11 +222,12 @@ private fun SelectThemeBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ResizeModeBottomSheet(
     onSelected: (ResizeMode?) -> Unit,
+    onDismiss: () -> Unit,
 ) {
     ModalBottomSheet(
         modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
         onDismissRequest = {
-            onSelected(null)
+            onDismiss()
         },
     ) {
         val values = listOf(
@@ -243,6 +246,7 @@ private fun ResizeModeBottomSheet(
                         .fillMaxWidth()
                         .clickable {
                             onSelected(value)
+                            onDismiss()
                         }
                         .padding(
                             horizontal = Spacing.m,
