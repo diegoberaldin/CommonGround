@@ -10,6 +10,8 @@ internal class DefaultSettingsViewModel : SettingsViewModel,
     ) {
 
     override fun reduce(intent: SettingsViewModel.Intent) {
-        TODO("Not yet implemented")
+        when (intent) {
+            else -> Unit
+        }
     }
 }

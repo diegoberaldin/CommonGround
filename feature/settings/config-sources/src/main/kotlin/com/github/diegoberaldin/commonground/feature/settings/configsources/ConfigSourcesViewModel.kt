@@ -8,6 +8,8 @@ interface ConfigSourcesViewModel :
     sealed interface Intent {
         data class DeleteItem(val source: SourceInfoModel) : Intent
         data object ResetAll : Intent
+
+        data class Upsert(val source: SourceInfoModel) : Intent
     }
 
     data class State(

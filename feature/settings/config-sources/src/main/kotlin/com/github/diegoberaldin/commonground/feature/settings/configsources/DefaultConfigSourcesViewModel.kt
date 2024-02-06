@@ -35,6 +35,7 @@ internal class DefaultConfigSourcesViewModel(
             }
 
             ConfigSourcesViewModel.Intent.ResetAll -> resetAll()
+            is ConfigSourcesViewModel.Intent.Upsert -> upsertSource(intent.source)
         }
     }
 
@@ -47,6 +48,12 @@ internal class DefaultConfigSourcesViewModel(
     private fun resetAll() {
         viewModelScope.launch {
             resetSources()
+        }
+    }
+
+    private fun upsertSource(source: SourceInfoModel) {
+        viewModelScope.launch {
+            sourceInfoRepository.create(source)
         }
     }
 }

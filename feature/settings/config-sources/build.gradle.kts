@@ -46,6 +46,8 @@ dependencies {
     implementation(projects.core.utils)
 
     implementation(projects.domain.imageSource.data)
+    implementation(projects.domain.imageFetch.fetcherApi)
+    implementation(projects.domain.imageFetch.lemmy)
     implementation(projects.domain.imageSource.repository)
     implementation(projects.domain.imageSource.usecase)
 

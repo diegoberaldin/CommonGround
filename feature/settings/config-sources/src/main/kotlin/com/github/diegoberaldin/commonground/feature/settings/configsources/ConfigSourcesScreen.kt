@@ -39,6 +39,8 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordina
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.core.utils.toLocalDp
+import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoModel
+import com.github.diegoberaldin.commonground.feature.settings.configsources.edit.EditSourceBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +52,8 @@ fun ConfigSourcesScreen(
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
+    var createModalBottomSheetOpen by remember { mutableStateOf(false) }
+    var editedSource by remember { mutableStateOf<SourceInfoModel?>(null) }
 
     DisposableEffect(Unit) {
         drawerCoordinator.changeGesturesEnabled(false)
@@ -130,8 +134,10 @@ fun ConfigSourcesScreen(
                                                 .clickable {
                                                     optionsExpanded = false
                                                     when (option.id) {
-                                                        // TODO
-                                                        OptionId.Add -> Unit
+                                                        OptionId.Add -> {
+                                                            editedSource = null
+                                                            createModalBottomSheetOpen = true
+                                                        }
 
                                                         OptionId.Reset -> {
                                                             model.accept(ConfigSourcesViewModel.Intent.ResetAll)
@@ -170,8 +176,10 @@ fun ConfigSourcesScreen(
                     ),
                     onOptionSelected = {
                         when (it) {
-                            // TODO
-                            OptionId.Edit -> Unit
+                            OptionId.Edit -> {
+                                editedSource = info
+                                createModalBottomSheetOpen = true
+                            }
 
                             OptionId.Delete -> {
                                 model.accept(ConfigSourcesViewModel.Intent.DeleteItem(info))
@@ -183,5 +191,17 @@ fun ConfigSourcesScreen(
                 )
             }
         }
+    }
+
+    if (createModalBottomSheetOpen) {
+        EditSourceBottomSheet(
+            initial = editedSource,
+            onClose = { source ->
+                createModalBottomSheetOpen = false
+                if (source != null) {
+                    model.accept(ConfigSourcesViewModel.Intent.Upsert(source))
+                }
+            },
+        )
     }
 }
