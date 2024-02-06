@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.diegoberaldin.commonground.feature.settings"
+    namespace = "com.github.diegoberaldin.commonground.feature.settings.configsources"
     compileSdk = 34
 
     defaultConfig {
@@ -45,7 +45,8 @@ dependencies {
     implementation(projects.core.architecture)
     implementation(projects.core.utils)
 
-    implementation(projects.domain.gallery)
+    implementation(projects.domain.imageSource.data)
+    implementation(projects.domain.imageSource.repository)
 
     testImplementation(libs.junit)
 

@@ -39,6 +39,7 @@ import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
+    onConfigSources: () -> Unit,
 ) {
     val model: SettingsViewModel = injectViewModel<DefaultSettingsViewModel>()
     model.BindToLifecycle()
@@ -83,7 +84,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(Spacing.xxs),
             ) {
                 SettingsHeader(title = stringResource(commonR.string.settings_header_look_and_feel))
                 SettingsRow(
@@ -93,6 +94,9 @@ fun SettingsScreen(
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_config_sources),
                     disclosureIndicator = true,
+                    onTap = {
+                        onConfigSources()
+                    }
                 )
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_resize_mode),

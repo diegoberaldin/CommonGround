@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.github.diegoberaldin.commonground.core.appearance.repository.ThemeRepository
 import com.github.diegoberaldin.commonground.core.appearance.repository.UiTheme
 import com.github.diegoberaldin.commonground.core.appearance.theme.CommonGroundTheme
@@ -38,6 +39,7 @@ import com.github.diegoberaldin.commonground.feature.favorites.FavoritesScreen
 import com.github.diegoberaldin.commonground.feature.imagedetail.ImageDetailScreen
 import com.github.diegoberaldin.commonground.feature.imagelist.ImageListScreen
 import com.github.diegoberaldin.commonground.feature.settings.SettingsScreen
+import com.github.diegoberaldin.commonground.feature.settings.configsources.ConfigSourcesScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -107,7 +109,7 @@ class MainActivity : ComponentActivity() {
                                 DrawerSection.Settings -> {
                                     navController.popUntilRoot()
                                     navController.navigate(
-                                        route = NavigationDestination.Settings.route
+                                        route = NavigationDestination.Settings.Main.route,
                                     )
                                 }
 
@@ -186,10 +188,29 @@ private fun NavGraphBuilder.buildNavGraph(
             },
         )
     }
-    composable(
-        route = NavigationDestination.Settings.route,
+    navigation(
+        startDestination = NavigationDestination.Settings.Main.route,
+        route = NavigationDestination.Settings.Root.route,
     ) {
-        SettingsScreen()
+
+    }
+    composable(
+        route = NavigationDestination.Settings.Main.route,
+    ) {
+        SettingsScreen(
+            onConfigSources = {
+                navController.navigate(route = NavigationDestination.Settings.ConfigureSources.route)
+            },
+        )
+    }
+    composable(
+        route = NavigationDestination.Settings.ConfigureSources.route,
+    ) {
+        ConfigSourcesScreen(
+            onBack = {
+                navController.popBackStack()
+            },
+        )
     }
 }
 

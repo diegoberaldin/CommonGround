@@ -22,6 +22,7 @@ import com.github.diegoberaldin.commonground.feature.favorites.FeatureFavoritesM
 import com.github.diegoberaldin.commonground.feature.imagedetail.FeatureImageDetailModule
 import com.github.diegoberaldin.commonground.feature.imagelist.FeatureImageListModule
 import com.github.diegoberaldin.commonground.feature.settings.FeatureSettingsModule
+import com.github.diegoberaldin.commonground.feature.settings.configsources.FeatureSettingsConfigSourcesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ksp.generated.module
@@ -52,6 +53,7 @@ class MainApplication : Application(), ImageLoaderFactory {
                 FeatureImageListModule().module,
                 FeatureImageDetailModule().module,
                 FeatureSettingsModule().module,
+                FeatureSettingsConfigSourcesModule().module,
             )
         }
     }

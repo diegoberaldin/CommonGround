@@ -28,10 +28,13 @@ fun SettingsRow(
 ) {
     Row(
         modifier = modifier
-            .padding(vertical = Spacing.s, horizontal = Spacing.m)
             .clickable {
                 onTap?.invoke()
-            },
+            }
+            .padding(
+                vertical = Spacing.s,
+                horizontal = Spacing.m
+            ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
@@ -39,7 +42,7 @@ fun SettingsRow(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             if (subtitle != null) {

@@ -52,7 +52,7 @@ import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 fun ImageDetailScreen(
     id: String,
 ) {
-    val model = injectViewModel<DefaultImageDetailViewModel>()
+    val model: ImageDetailViewModel = injectViewModel<DefaultImageDetailViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }

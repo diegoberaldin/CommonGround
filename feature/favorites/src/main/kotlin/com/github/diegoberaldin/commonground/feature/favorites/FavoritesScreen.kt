@@ -47,7 +47,7 @@ fun FavoritesScreen(
     modifier: Modifier = Modifier,
     onOpenDetail: ((String) -> Unit)? = null,
 ) {
-    val model = injectViewModel<DefaultFavoritesViewModel>()
+    val model : FavoritesViewModel = injectViewModel<DefaultFavoritesViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val lazyGridState = rememberLazyGridState()

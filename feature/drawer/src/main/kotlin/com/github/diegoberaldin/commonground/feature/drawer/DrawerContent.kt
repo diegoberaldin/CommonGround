@@ -24,7 +24,7 @@ import com.github.diegoberaldin.commonground.core.commonui.R as commonR
 fun DrawerContent(
     modifier: Modifier = Modifier,
 ) {
-    val model = injectViewModel<DefaultDrawerViewModel>()
+    val model : DrawerViewModel = injectViewModel<DefaultDrawerViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
