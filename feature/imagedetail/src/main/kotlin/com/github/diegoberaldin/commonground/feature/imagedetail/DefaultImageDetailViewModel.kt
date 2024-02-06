@@ -13,6 +13,7 @@ import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 import com.github.diegoberaldin.commonground.domain.imagefetch.cache.ImageModelCache
 import com.github.diegoberaldin.commonground.domain.palette.PaletteCache
 import com.github.diegoberaldin.commonground.domain.palette.PaletteGenerator
+import com.github.diegoberaldin.commonground.domain.settings.SettingsRepository
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -24,6 +25,7 @@ internal class DefaultImageDetailViewModel(
     private val galleryManager: GalleryManager,
     private val wallpaperManager: WallpaperManager,
     private val favoriteRepository: FavoriteRepository,
+    private val settingsRepository: SettingsRepository,
     private val paletteGenerator: PaletteGenerator,
     private val paletteCache: PaletteCache,
     private val shareHelper: ShareHelper,
@@ -79,11 +81,16 @@ internal class DefaultImageDetailViewModel(
 
     private fun setBackground(mode: WallpaperMode) {
         val url = uiState.value.url.takeIf { it.isNotEmpty() } ?: return
+        val resizeMode = settingsRepository.current.value.resizeMode
         viewModelScope.launch {
             runCatching {
                 val bmp = downloadManager.getBitmap(url)
                 if (bmp != null) {
-                    wallpaperManager.set(bmp, mode)
+                    wallpaperManager.set(
+                        bitmap = bmp,
+                        wallpaperMode = mode,
+                        resizeMode = resizeMode,
+                    )
                 }
                 emit(ImageDetailViewModel.Event.OperationSuccess)
             }.exceptionOrNull()?.message?.also {

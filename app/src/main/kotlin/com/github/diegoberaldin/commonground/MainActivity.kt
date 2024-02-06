@@ -34,6 +34,7 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordina
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
+import com.github.diegoberaldin.commonground.domain.settings.SettingsRepository
 import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
 import com.github.diegoberaldin.commonground.feature.favorites.FavoritesScreen
 import com.github.diegoberaldin.commonground.feature.imagedetail.ImageDetailScreen
@@ -50,19 +51,22 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
-            val uiTheme = if (isSystemInDarkTheme()) {
+            val defaultTheme = if (isSystemInDarkTheme()) {
                 UiTheme.Dark
             } else {
                 UiTheme.Light
             }
             val themeRepository = rememberByInjection<ThemeRepository>()
+            val settingsRepository = rememberByInjection<SettingsRepository>()
             val navController = rememberNavController()
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
             val coroutineScope = rememberCoroutineScope()
             val drawerGesturesEnabled by drawerCoordinator.gesturesEnabled.collectAsState()
+            val currentSettings by settingsRepository.current.collectAsState()
 
             LaunchedEffect(themeRepository) {
+                val uiTheme = currentSettings.theme ?: defaultTheme
                 themeRepository.changeTheme(uiTheme)
             }
 

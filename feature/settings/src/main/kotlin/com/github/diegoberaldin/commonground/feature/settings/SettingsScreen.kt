@@ -1,21 +1,32 @@
 package com.github.diegoberaldin.commonground.feature.settings
 
-import android.provider.MediaStore.Images
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Style
+import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,15 +35,23 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import com.github.diegoberaldin.commonground.core.appearance.repository.UiTheme
+import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
+import com.github.diegoberaldin.commonground.domain.gallery.ResizeMode
 import com.github.diegoberaldin.commonground.feature.settings.components.SettingsHeader
 import com.github.diegoberaldin.commonground.feature.settings.components.SettingsRow
 import kotlinx.coroutines.launch
@@ -52,6 +71,8 @@ fun SettingsScreen(
         TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
     val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
     val coroutineScope = rememberCoroutineScope()
+    var themeBottomSheetOpen by remember { mutableStateOf(false) }
+    var resizeModeBottomSheetOpen by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -95,7 +116,12 @@ fun SettingsScreen(
                 )
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_theme),
+                    value = uiState.theme.toReadableString(),
+                    onTap = {
+                        themeBottomSheetOpen = true
+                    },
                 )
+
                 SettingsHeader(
                     icon = Icons.Default.Settings,
                     title = stringResource(commonR.string.settings_header_behavior),
@@ -109,8 +135,152 @@ fun SettingsScreen(
                 )
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_resize_mode),
+                    value = uiState.resizeMode.toReadableString(),
+                    onTap = {
+                        resizeModeBottomSheetOpen = true
+                    }
                 )
             }
         }
     }
+
+    if (themeBottomSheetOpen) {
+        SelectThemeBottomSheet(
+            onSelected = { value ->
+                themeBottomSheetOpen = false
+                if (value != null) {
+                    model.accept(SettingsViewModel.Intent.ChangeTheme(value))
+                }
+            },
+        )
+    }
+
+    if (resizeModeBottomSheetOpen) {
+        ResizeModeBottomSheet(
+            onSelected = { value ->
+                resizeModeBottomSheetOpen = false
+                if (value != null) {
+                    model.accept(SettingsViewModel.Intent.ChangeResizeMode(value))
+                }
+            },
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun SelectThemeBottomSheet(
+    onSelected: (UiTheme?) -> Unit,
+) {
+    ModalBottomSheet(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+        onDismissRequest = {
+            onSelected(null)
+        },
+    ) {
+        val values = listOf(
+            UiTheme.Light,
+            UiTheme.Dark,
+            UiTheme.Black,
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            for (value in values) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onSelected(value)
+                        }
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    Icon(
+                        modifier = Modifier.size(IconSize.l),
+                        imageVector = value.toIcon(),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = value.toReadableString(),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(Spacing.m))
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ResizeModeBottomSheet(
+    onSelected: (ResizeMode?) -> Unit,
+) {
+    ModalBottomSheet(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+        onDismissRequest = {
+            onSelected(null)
+        },
+    ) {
+        val values = listOf(
+            ResizeMode.Crop,
+            ResizeMode.FitHeight,
+            ResizeMode.FitWidth,
+            ResizeMode.Zoom,
+            null,
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            for (value in values) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onSelected(value)
+                        }
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    Text(
+                        text = value.toReadableString(),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(Spacing.m))
+        }
+    }
+}
+
+@Composable
+private fun UiTheme.toReadableString(): String = when (this) {
+    UiTheme.Black -> stringResource(commonR.string.settings_theme_black)
+    UiTheme.Dark -> stringResource(commonR.string.settings_theme_dark)
+    UiTheme.Light -> stringResource(commonR.string.settings_theme_light)
+}
+
+@Composable
+private fun UiTheme.toIcon(): ImageVector = when (this) {
+    UiTheme.Black -> Icons.Default.DarkMode
+    UiTheme.Dark -> Icons.Outlined.DarkMode
+    UiTheme.Light -> Icons.Default.LightMode
+}
+
+@Composable
+private fun ResizeMode?.toReadableString(): String = when (this) {
+    ResizeMode.Crop -> stringResource(id = commonR.string.resize_mode_crop)
+    ResizeMode.FitHeight -> stringResource(id = commonR.string.resize_mode_fit_height)
+    ResizeMode.FitWidth -> stringResource(id = commonR.string.resize_mode_fit_width)
+    ResizeMode.Zoom -> stringResource(id = commonR.string.resize_mode_zoom)
+    else -> stringResource(id = commonR.string.resize_mode_none)
 }

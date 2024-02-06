@@ -52,6 +52,7 @@ dependencies {
     implementation(projects.domain.imageFetch.data)
     implementation(projects.domain.imageFetch.cache)
     implementation(projects.domain.palette)
+    implementation(projects.domain.settings)
 
     testImplementation(libs.junit)
 

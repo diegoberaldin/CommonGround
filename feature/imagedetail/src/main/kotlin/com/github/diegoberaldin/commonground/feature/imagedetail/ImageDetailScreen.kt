@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -143,14 +145,13 @@ private fun SelectWallpaperModeModal(
         WallpaperMode.Both,
     )
     ModalBottomSheet(
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.navigationBars),
         onDismissRequest = {
             onSelect(null)
         },
     ) {
         Column(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(horizontal = Spacing.m),
             verticalArrangement = Arrangement.spacedBy(Spacing.xs),
         ) {
             for (value in values) {
@@ -160,7 +161,10 @@ private fun SelectWallpaperModeModal(
                         .clickable {
                             onSelect(value)
                         }
-                        .padding(vertical = Spacing.s),
+                        .padding(
+                            horizontal = Spacing.m,
+                            vertical = Spacing.s,
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.m),
                 ) {
@@ -175,6 +179,7 @@ private fun SelectWallpaperModeModal(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(Spacing.m))
         }
     }
 }

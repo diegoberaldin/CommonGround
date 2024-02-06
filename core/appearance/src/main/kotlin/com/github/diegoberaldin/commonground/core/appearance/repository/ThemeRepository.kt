@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface ThemeRepository {
 
-    val theme: StateFlow<UiTheme>
+    val theme: StateFlow<UiTheme?>
 
     fun changeTheme(value: UiTheme)
 }
