@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface SourceInfoRepository {
     fun observeAll(): Flow<List<SourceInfoModel>>
 
+    suspend fun deleteAll()
+
     suspend fun getById(id: Int): SourceInfoModel?
 
     suspend fun update(value: SourceInfoModel)

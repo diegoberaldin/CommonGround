@@ -5,7 +5,10 @@ import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoM
 
 interface ConfigSourcesViewModel :
     MviModel<ConfigSourcesViewModel.Intent, ConfigSourcesViewModel.State, ConfigSourcesViewModel.Event> {
-    sealed interface Intent
+    sealed interface Intent {
+        data class DeleteItem(val source: SourceInfoModel) : Intent
+        data object ResetAll : Intent
+    }
 
     data class State(
         val sources: List<SourceInfoModel> = emptyList(),

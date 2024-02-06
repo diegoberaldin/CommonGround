@@ -47,6 +47,7 @@ dependencies {
 
     implementation(projects.domain.imageSource.data)
     implementation(projects.domain.imageSource.repository)
+    implementation(projects.domain.imageSource.usecase)
 
     testImplementation(libs.junit)
 

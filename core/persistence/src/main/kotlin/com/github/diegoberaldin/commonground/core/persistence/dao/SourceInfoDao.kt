@@ -27,6 +27,9 @@ interface SourceInfoDao {
     @Delete
     suspend fun delete(value: SourceInfoEntity)
 
+    @Query("DELETE FROM $TABLE_NAME WHERE 1")
+    suspend fun deleteAll()
+
     companion object {
         const val TABLE_NAME = "source_info"
     }
