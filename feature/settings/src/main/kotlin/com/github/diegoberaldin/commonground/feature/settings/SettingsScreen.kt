@@ -1,5 +1,6 @@
 package com.github.diegoberaldin.commonground.feature.settings
 
+import android.provider.MediaStore.Images
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Style
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -86,11 +89,17 @@ fun SettingsScreen(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(Spacing.xxs),
             ) {
-                SettingsHeader(title = stringResource(commonR.string.settings_header_look_and_feel))
+                SettingsHeader(
+                    icon = Icons.Default.Style,
+                    title = stringResource(commonR.string.settings_header_look_and_feel),
+                )
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_theme),
                 )
-                SettingsHeader(title = stringResource(commonR.string.settings_header_behavior))
+                SettingsHeader(
+                    icon = Icons.Default.Settings,
+                    title = stringResource(commonR.string.settings_header_behavior),
+                )
                 SettingsRow(
                     title = stringResource(commonR.string.settings_item_config_sources),
                     disclosureIndicator = true,
