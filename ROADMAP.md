@@ -1,6 +1,4 @@
 ## Roadmap
 
-- [ ] thumbnail for data source (community image)
-- [ ] settings screen with theme customization, language, resize mode
-- [ ] add new image source from Lemmy
-- [ ] filters on Lemmy (e. g. keywords)
+- [ ] customize UI theme and image resize mode
+- [ ] show source handle (e.g. !name@host)

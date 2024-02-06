@@ -35,7 +35,6 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.feature.favorites.components.FavoriteCard
-import com.github.diegoberaldin.commonground.feature.favorites.components.FavoriteCardPlaceholder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -47,7 +46,7 @@ fun FavoritesScreen(
     modifier: Modifier = Modifier,
     onOpenDetail: ((String) -> Unit)? = null,
 ) {
-    val model = injectViewModel<DefaultFavoritesViewModel>()
+    val model : FavoritesViewModel = injectViewModel<DefaultFavoritesViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val lazyGridState = rememberLazyGridState()
@@ -112,11 +111,6 @@ fun FavoritesScreen(
                 if (!uiState.initial && uiState.images.isEmpty()) {
                     item {
                         Text(text = stringResource(id = commonR.string.message_empty_list))
-                    }
-                }
-                if (uiState.initial) {
-                    items(6) {
-                        FavoriteCardPlaceholder()
                     }
                 }
                 items(

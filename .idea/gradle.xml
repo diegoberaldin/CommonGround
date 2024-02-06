@@ -35,6 +35,7 @@
             <option value="$PROJECT_DIR$/feature/favorites" />
             <option value="$PROJECT_DIR$/feature/imagedetail" />
             <option value="$PROJECT_DIR$/feature/imagelist" />
+            <option value="$PROJECT_DIR$/feature/settings" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

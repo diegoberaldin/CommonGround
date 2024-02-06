@@ -18,6 +18,10 @@ internal class DefaultSourceInfoRepository(
         daoProvider.sourceInfo.getAll().map { it.map { e -> e.toModel() } }
             .flowOn(Dispatchers.IO)
 
+    override suspend fun deleteAll(): Unit = withContext(Dispatchers.IO) {
+        daoProvider.sourceInfo.deleteAll()
+    }
+
     override suspend fun getById(id: Int) = withContext(Dispatchers.IO) {
         daoProvider.sourceInfo.getById(id)?.toModel()
     }
@@ -27,7 +31,7 @@ internal class DefaultSourceInfoRepository(
         daoProvider.sourceInfo.update(entity)
     }
 
-    override suspend fun create(vararg value:SourceInfoModel) = withContext(Dispatchers.IO) {
+    override suspend fun create(vararg value: SourceInfoModel) = withContext(Dispatchers.IO) {
         val entities = value.map { it.toEntity() }.toTypedArray()
         daoProvider.sourceInfo.insert(*entities)
     }

@@ -12,6 +12,6 @@ internal class DefaultPaletteCache : PaletteCache {
     override suspend fun get(url: String): Palette? = cache[url]
 
     override suspend fun put(url: String, palette: Palette) {
-        cache.put(key = url, value = palette)
+        cache.put(url, palette)
     }
 }

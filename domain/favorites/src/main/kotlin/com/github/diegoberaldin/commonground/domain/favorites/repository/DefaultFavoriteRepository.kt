@@ -4,6 +4,7 @@ import com.github.diegoberaldin.commonground.core.persistence.provider.DaoProvid
 import com.github.diegoberaldin.commonground.domain.imagefetch.data.ImageModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Single
@@ -30,4 +31,5 @@ internal class DefaultFavoriteRepository(
 
     override fun getAll(): Flow<List<ImageModel>> =
         daoProvider.favorite.getAll().map { it.map { f -> f.toImageModel() } }
+            .flowOn(Dispatchers.IO)
 }

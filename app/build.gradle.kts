@@ -86,6 +86,8 @@ dependencies {
     implementation(projects.feature.favorites)
     implementation(projects.feature.imagedetail)
     implementation(projects.feature.imagelist)
+    implementation(projects.feature.settings)
+    implementation(projects.feature.settings.configSources)
 
     testImplementation(libs.junit)
 

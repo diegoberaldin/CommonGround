@@ -13,6 +13,8 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -23,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.github.diegoberaldin.commonground.core.appearance.repository.ThemeRepository
 import com.github.diegoberaldin.commonground.core.appearance.repository.UiTheme
 import com.github.diegoberaldin.commonground.core.appearance.theme.CommonGroundTheme
@@ -35,6 +38,8 @@ import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
 import com.github.diegoberaldin.commonground.feature.favorites.FavoritesScreen
 import com.github.diegoberaldin.commonground.feature.imagedetail.ImageDetailScreen
 import com.github.diegoberaldin.commonground.feature.imagelist.ImageListScreen
+import com.github.diegoberaldin.commonground.feature.settings.SettingsScreen
+import com.github.diegoberaldin.commonground.feature.settings.configsources.ConfigSourcesScreen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -55,6 +60,7 @@ class MainActivity : ComponentActivity() {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
             val coroutineScope = rememberCoroutineScope()
+            val drawerGesturesEnabled by drawerCoordinator.gesturesEnabled.collectAsState()
 
             LaunchedEffect(themeRepository) {
                 themeRepository.changeTheme(uiTheme)
@@ -100,6 +106,13 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
 
+                                DrawerSection.Settings -> {
+                                    navController.popUntilRoot()
+                                    navController.navigate(
+                                        route = NavigationDestination.Settings.Main.route,
+                                    )
+                                }
+
                                 else -> {
                                     Unit
                                 }
@@ -108,6 +121,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     ModalNavigationDrawer(
+                        gesturesEnabled = drawerGesturesEnabled,
                         drawerState = drawerState,
                         drawerContent = {
                             ModalDrawerSheet {
@@ -171,6 +185,30 @@ private fun NavGraphBuilder.buildNavGraph(
                         params = mapOf("id" to imageId)
                     )
                 )
+            },
+        )
+    }
+    navigation(
+        startDestination = NavigationDestination.Settings.Main.route,
+        route = NavigationDestination.Settings.Root.route,
+    ) {
+
+    }
+    composable(
+        route = NavigationDestination.Settings.Main.route,
+    ) {
+        SettingsScreen(
+            onConfigSources = {
+                navController.navigate(route = NavigationDestination.Settings.ConfigureSources.route)
+            },
+        )
+    }
+    composable(
+        route = NavigationDestination.Settings.ConfigureSources.route,
+    ) {
+        ConfigSourcesScreen(
+            onBack = {
+                navController.popBackStack()
             },
         )
     }
