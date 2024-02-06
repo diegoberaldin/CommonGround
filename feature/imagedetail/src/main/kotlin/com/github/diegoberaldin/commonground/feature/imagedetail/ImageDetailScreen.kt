@@ -25,6 +25,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +40,9 @@ import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
+import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
+import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.domain.gallery.WallpaperMode
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -54,7 +57,14 @@ fun ImageDetailScreen(
     val uiState by model.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var wallpaperModalSelectionOpen by remember { mutableStateOf(false) }
+    val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
 
+    DisposableEffect(Unit) {
+        drawerCoordinator.changeGesturesEnabled(false)
+        onDispose {
+            drawerCoordinator.changeGesturesEnabled(true)
+        }
+    }
     LaunchedEffect(id) {
         model.accept(ImageDetailViewModel.Intent.Load(id))
     }

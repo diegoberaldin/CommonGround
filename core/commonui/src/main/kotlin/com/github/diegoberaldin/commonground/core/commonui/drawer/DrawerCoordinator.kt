@@ -14,11 +14,14 @@ sealed interface DrawerSection {
 @Immutable
 interface DrawerCoordinator {
 
+    val gesturesEnabled: StateFlow<Boolean>
     val events: SharedFlow<DrawerEvent>
     val section: StateFlow<DrawerSection?>
 
     suspend fun send(event: DrawerEvent)
 
     fun changeSection(value: DrawerSection?)
+
+    fun changeGesturesEnabled(value: Boolean)
 }
 

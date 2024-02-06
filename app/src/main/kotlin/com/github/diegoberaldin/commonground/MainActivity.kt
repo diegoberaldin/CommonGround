@@ -13,6 +13,8 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -56,6 +58,7 @@ class MainActivity : ComponentActivity() {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
             val coroutineScope = rememberCoroutineScope()
+            val drawerGesturesEnabled by drawerCoordinator.gesturesEnabled.collectAsState()
 
             LaunchedEffect(themeRepository) {
                 themeRepository.changeTheme(uiTheme)
@@ -116,6 +119,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     ModalNavigationDrawer(
+                        gesturesEnabled = drawerGesturesEnabled,
                         drawerState = drawerState,
                         drawerContent = {
                             ModalDrawerSheet {
