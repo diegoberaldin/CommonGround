@@ -11,4 +11,5 @@ data class SettingsEntity(
     @ColumnInfo("id") val id: Int,
     @ColumnInfo("theme") val theme: Int?,
     @ColumnInfo("resizeMode") val resizeMode: Int?,
+    @ColumnInfo("lang") val lang: String?,
 )

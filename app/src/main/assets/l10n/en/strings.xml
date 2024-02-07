@@ -9,6 +9,9 @@
     <string name="edit_source_field_lemmy_host">Lemmy instance</string>
     <string name="edit_source_field_name">Name</string>
     <string name="edit_source_field_type">Source type</string>
+    <string name="lang">en</string>
+    <string name="language_en" translatable="false">English</string>
+    <string name="language_it" translatable="false">Italiano</string>
     <string name="menu_item_favorites">Favourites</string>
     <string name="menu_item_settings">Settings</string>
     <string name="message_empty_list">No item to display</string>
@@ -23,6 +26,7 @@
     <string name="resize_mode_none">None</string>
     <string name="resize_mode_zoom">Zoom</string>
     <string name="settings_item_config_sources">Configure sources</string>
+    <string name="settings_item_language">Language</string>
     <string name="settings_item_resize_mode">Image resize mode</string>
     <string name="settings_item_theme">Theme</string>
     <string name="settings_theme_black">Black</string>

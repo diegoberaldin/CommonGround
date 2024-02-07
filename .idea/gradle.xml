@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/core/appearance" />
             <option value="$PROJECT_DIR$/core/architecture" />
             <option value="$PROJECT_DIR$/core/commonui" />
+            <option value="$PROJECT_DIR$/core/l10n" />
             <option value="$PROJECT_DIR$/core/persistence" />
             <option value="$PROJECT_DIR$/core/utils" />
             <option value="$PROJECT_DIR$/domain" />

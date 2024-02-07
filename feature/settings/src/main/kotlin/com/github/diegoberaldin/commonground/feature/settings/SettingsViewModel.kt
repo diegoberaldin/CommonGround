@@ -9,11 +9,13 @@ interface SettingsViewModel :
     sealed interface Intent {
         data class ChangeTheme(val theme: UiTheme) : Intent
         data class ChangeResizeMode(val resizeMode: ResizeMode?) : Intent
+        data class ChangeLanguage(val lang: String) : Intent
     }
 
     data class State(
         val theme: UiTheme = UiTheme.Dark,
         val resizeMode: ResizeMode? = null,
+        val lang: String? = null,
     )
 
     sealed interface Event

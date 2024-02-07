@@ -33,6 +33,8 @@ import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
+import com.github.diegoberaldin.commonground.core.l10n.L10nHolder
+import com.github.diegoberaldin.commonground.core.l10n.repository.LocalizationRepository
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.domain.settings.SettingsRepository
 import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
@@ -56,6 +58,7 @@ class MainActivity : ComponentActivity() {
             } else {
                 UiTheme.Light
             }
+
             val themeRepository = rememberByInjection<ThemeRepository>()
             val settingsRepository = rememberByInjection<SettingsRepository>()
             val navController = rememberNavController()
@@ -64,10 +67,26 @@ class MainActivity : ComponentActivity() {
             val coroutineScope = rememberCoroutineScope()
             val drawerGesturesEnabled by drawerCoordinator.gesturesEnabled.collectAsState()
             val currentSettings by settingsRepository.current.collectAsState()
+            val l10n = rememberByInjection<LocalizationRepository>()
+            L10nHolder.l10n = l10n
+            val lang = currentSettings.lang ?: "en"
 
             LaunchedEffect(themeRepository) {
                 val uiTheme = currentSettings.theme ?: defaultTheme
                 themeRepository.changeTheme(uiTheme)
+            }
+            LaunchedEffect(settingsRepository) {
+                if (currentSettings.lang.isNullOrEmpty()) {
+                    val newSettings = currentSettings.copy(lang = lang)
+                    settingsRepository.update(newSettings)
+                }
+            }
+            LaunchedEffect(lang) {
+                l10n.changeLanguage(lang)
+            }
+            val langState by l10n.currentLanguage.collectAsState()
+            LaunchedEffect(langState) {
+                // trigger a recomposition on language change
             }
 
             CommonGroundTheme {
@@ -168,8 +187,7 @@ private fun NavGraphBuilder.buildNavGraph(
         )
     }
     composable(
-        route = NavigationDestination.ImageDetail.route,
-        arguments = listOf(
+        route = NavigationDestination.ImageDetail.route, arguments = listOf(
             navArgument("id") {
                 type = NavType.StringType
                 nullable = false

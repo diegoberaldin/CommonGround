@@ -7,6 +7,7 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.github.diegoberaldin.commonground.core.appearance.CoreAppearanceModule
 import com.github.diegoberaldin.commonground.core.commonui.CoreCommonUiModule
+import com.github.diegoberaldin.commonground.core.l10n.CoreL10nModule
 import com.github.diegoberaldin.commonground.core.persistence.CorePersistenceModule
 import com.github.diegoberaldin.commonground.core.utils.CoreUtilsModule
 import com.github.diegoberaldin.commonground.domain.favorites.DomainFavoritesModule
@@ -37,6 +38,7 @@ class MainApplication : Application(), ImageLoaderFactory {
             modules(
                 CoreAppearanceModule().module,
                 CoreCommonUiModule().module,
+                CoreL10nModule().module,
                 CorePersistenceModule().module,
                 CoreUtilsModule().module,
 

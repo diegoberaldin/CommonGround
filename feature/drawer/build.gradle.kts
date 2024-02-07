@@ -43,6 +43,7 @@ dependencies {
     implementation(projects.core.appearance)
     implementation(projects.core.architecture)
     implementation(projects.core.commonui)
+    implementation(projects.core.l10n)
     implementation(projects.core.utils)
     implementation(projects.domain.imageSource.data)
     implementation(projects.domain.imageSource.repository)

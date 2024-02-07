@@ -27,7 +27,12 @@ internal class DefaultSettingsViewModel(
                 updateState { it.copy(theme = theme ?: UiTheme.Light) }
             }.launchIn(this)
             settingsRepository.current.onEach { settings ->
-                updateState { it.copy(resizeMode = settings.resizeMode) }
+                updateState {
+                    it.copy(
+                        resizeMode = settings.resizeMode,
+                        lang = settings.lang,
+                    )
+                }
             }.launchIn(this)
         }
     }
@@ -36,6 +41,7 @@ internal class DefaultSettingsViewModel(
         when (intent) {
             is SettingsViewModel.Intent.ChangeTheme -> updateTheme(intent.theme)
             is SettingsViewModel.Intent.ChangeResizeMode -> updateResizeMode(intent.resizeMode)
+            is SettingsViewModel.Intent.ChangeLanguage -> updateLanguage(intent.lang)
         }
     }
 
@@ -50,6 +56,13 @@ internal class DefaultSettingsViewModel(
     private fun updateResizeMode(resizeMode: ResizeMode?) {
         viewModelScope.launch {
             val settings = settingsRepository.current.value.copy(resizeMode = resizeMode)
+            settingsRepository.update(settings)
+        }
+    }
+
+    private fun updateLanguage(lang: String) {
+        viewModelScope.launch {
+            val settings = settingsRepository.current.value.copy(lang = lang)
             settingsRepository.update(settings)
         }
     }

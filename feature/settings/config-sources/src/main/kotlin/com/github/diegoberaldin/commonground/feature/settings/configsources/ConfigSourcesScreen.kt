@@ -29,14 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
 import com.github.diegoberaldin.commonground.core.commonui.Option
 import com.github.diegoberaldin.commonground.core.commonui.OptionId
-import com.github.diegoberaldin.commonground.core.commonui.R
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
+import com.github.diegoberaldin.commonground.core.l10n.localized
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.core.utils.toLocalDp
@@ -78,7 +77,7 @@ fun ConfigSourcesScreen(
                 },
                 title = {
                     Text(
-                        text = stringResource(R.string.settings_item_config_sources),
+                        text = "settings_item_config_sources".localized(),
                         style = MaterialTheme.typography.titleLarge,
                     )
                 },
@@ -89,11 +88,11 @@ fun ConfigSourcesScreen(
                         val options = listOf(
                             Option(
                                 id = OptionId.Add,
-                                text = stringResource(R.string.action_add),
+                                text = "action_add".localized(),
                             ),
                             Option(
                                 id = OptionId.Reset,
-                                text = stringResource(R.string.action_reset),
+                                text = "action_reset".localized(),
                             ),
                         )
                         var optionsExpanded by remember { mutableStateOf(false) }
@@ -168,11 +167,11 @@ fun ConfigSourcesScreen(
                     options = listOf(
                         Option(
                             id = OptionId.Edit,
-                            text = stringResource(R.string.action_edit),
+                            text = "action_edit".localized(),
                         ),
                         Option(
                             id = OptionId.Delete,
-                            text = stringResource(R.string.action_delete),
+                            text = "action_delete".localized(),
                         ),
                     ),
                     onOptionSelected = {

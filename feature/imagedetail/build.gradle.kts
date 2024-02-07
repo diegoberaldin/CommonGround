@@ -46,7 +46,9 @@ dependencies {
     implementation(projects.core.appearance)
     implementation(projects.core.architecture)
     implementation(projects.core.commonui)
+    implementation(projects.core.l10n)
     implementation(projects.core.utils)
+
     implementation(projects.domain.favorites)
     implementation(projects.domain.gallery)
     implementation(projects.domain.imageFetch.data)
