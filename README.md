@@ -9,7 +9,7 @@
 <br />
 
 <div align="center">
-  <img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/434d6305-559e-4e05-a9f1-e3809ec5865e" width="250" height="auto" />
+  <img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/434d6305-559e-4e05-a9f1-e3809ec5865e" width="200" height="auto" />
 </div>
 
 # CommonGround
@@ -20,9 +20,9 @@ This project wouldn't exist without [WallYou](https://github.com/you-apps/WallYo
 which provides a wider range of sources and features (e.g. automatic background carousels from
 multiple sources, etc.).
 
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/e81adc01-b3c7-4197-9850-ba3f4875cc98" alt="home screen" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/f74539c3-11ac-4525-a4e3-5a1dc844923d" alt="image detail screen" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/cd68a0c7-8e19-4a88-a934-46f6b169634f" alt="sidebar" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/16f06549-ab46-4421-955d-4749e8c4b3ba" alt="favourites" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/f4da4081-e954-4ef3-a265-4cb5c7926d7a" alt="settings" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/4f0eebaf-687f-411c-8ddd-0f004435d5a8" alt="source configuration" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/4e3b597f-ba8b-45b8-81bf-7e94aa1747b3" alt="home screen" width="300" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/c0c3dc28-7c05-4ef6-9d1a-ac7ae8cff638" alt="image detail screen" width="300" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/5c09f82e-29dd-4ea8-a199-c950b03a0ad3" alt="sidebar" width="300" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/eb995435-ed88-40bb-a442-dd5a07666c48" alt="favourites" width="300" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/69c366a0-db9b-4e46-9384-5b49cae3cef9" alt="settings" width="300" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/4a638639-3f6b-4bba-88da-a683a75803dd" alt="source configuration" width="300" />
