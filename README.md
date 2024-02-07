@@ -20,6 +20,9 @@ This project wouldn't exist without [WallYou](https://github.com/you-apps/WallYo
 which provides a wider range of sources and features (e.g. automatic background carousels from
 multiple sources, etc.).
 
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/30734230-23b8-407e-829c-c96aa43105f6" alt="home screen" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/95d15098-ba54-4a84-8720-ec4cebb9f267" alt="image detail screen" width="310" />
-<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/77caa228-5b09-40e1-9ebf-fd42162cdced" alt="sidebar" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/e81adc01-b3c7-4197-9850-ba3f4875cc98" alt="home screen" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/f74539c3-11ac-4525-a4e3-5a1dc844923d" alt="image detail screen" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/cd68a0c7-8e19-4a88-a934-46f6b169634f" alt="sidebar" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/16f06549-ab46-4421-955d-4749e8c4b3ba" alt="favourites" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/f4da4081-e954-4ef3-a265-4cb5c7926d7a" alt="settings" width="310" />
+<img src="https://github.com/diegoberaldin/CommonGround/assets/2738294/4f0eebaf-687f-411c-8ddd-0f004435d5a8" alt="source configuration" width="310" />
