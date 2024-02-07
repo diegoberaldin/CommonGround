@@ -72,7 +72,7 @@ internal fun SelectThemeBottomSheet(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(Spacing.m))
+            Spacer(modifier = Modifier.height(Spacing.l))
         }
     }
 }

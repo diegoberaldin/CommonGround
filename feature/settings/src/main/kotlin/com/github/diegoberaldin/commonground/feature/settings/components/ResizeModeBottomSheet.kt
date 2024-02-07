@@ -65,7 +65,7 @@ internal fun ResizeModeBottomSheet(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(Spacing.m))
+            Spacer(modifier = Modifier.height(Spacing.l))
         }
     }
 }
