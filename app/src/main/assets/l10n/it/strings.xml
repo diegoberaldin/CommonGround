@@ -17,6 +17,7 @@
     <string name="message_missing_fields">Campi mancanti</string>
     <string name="message_operation_success">Operazione completata con successo</string>
     <string name="settings_header_behavior">Comportamento</string>
+    <string name="settings_header_debug">Debug</string>
     <string name="settings_header_look_and_feel">Aspetto interfaccia</string>
     <string name="resize_mode_crop">Ritaglia</string>
     <string name="resize_mode_fit_height">Adatta all\'altezza</string>
@@ -27,6 +28,7 @@
     <string name="settings_item_language">Lingua</string>
     <string name="settings_item_resize_mode">Modalità ridimensionamento immagine</string>
     <string name="settings_item_theme">Tema</string>
+    <string name="settings_item_version">Versione app</string>
     <string name="settings_theme_black">Nero</string>
     <string name="settings_theme_dark">Scuro</string>
     <string name="settings_theme_light">Chiaro</string>

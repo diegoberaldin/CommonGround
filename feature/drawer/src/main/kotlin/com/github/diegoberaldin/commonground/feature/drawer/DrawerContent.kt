@@ -44,19 +44,21 @@ fun DrawerContent(
             val oldSection = drawerCoordinator.section.value
             drawerCoordinator.changeSection(null)
             delay(50)
-           drawerCoordinator.changeSection(oldSection)
+            drawerCoordinator.changeSection(oldSection)
         }.launchIn(this)
     }
 
 
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.padding(
+            horizontal = Spacing.s,
+        ),
     ) {
         items(uiState.sources) { source ->
             ImageListDrawerItem(
                 modifier = Modifier.fillMaxWidth(),
                 source = source,
-                active = (currentSection as? DrawerSection.ImageList)?.source == source,
+                active = (currentSection as? DrawerSection.ImageList)?.source?.id == source.id,
                 onSelected = {
                     drawerCoordinator.changeSection(DrawerSection.ImageList(source))
                     coroutineScope.launch {

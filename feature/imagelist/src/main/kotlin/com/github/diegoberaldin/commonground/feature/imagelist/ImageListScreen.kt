@@ -95,17 +95,20 @@ fun ImageListScreen(
                     scrollBehavior = topAppBarScrollBehavior,
                     navigationIcon = {
                         Icon(
-                            modifier = Modifier.clickable {
-                                coroutineScope.launch {
-                                    drawerCoordinator.send(DrawerEvent.Toggle)
-                                }
-                            },
+                            modifier = Modifier
+                                .padding(Spacing.xxs)
+                                .clickable {
+                                    coroutineScope.launch {
+                                        drawerCoordinator.send(DrawerEvent.Toggle)
+                                    }
+                                },
                             imageVector = Icons.Default.Menu,
                             contentDescription = null,
                         )
                     },
                     title = {
                         Text(
+                            modifier = Modifier.padding(start = Spacing.xs),
                             text = uiState.title,
                             style = MaterialTheme.typography.titleLarge,
                         )
@@ -135,7 +138,10 @@ fun ImageListScreen(
             ) {
                 if (!uiState.initial && uiState.images.isEmpty() && !uiState.loading) {
                     item {
-                        Text(text = "message_empty_list".localized())
+                        Text(
+                            modifier = Modifier.padding(horizontal = Spacing.m),
+                            text = "message_empty_list".localized(),
+                        )
                     }
                 }
                 if (uiState.initial) {

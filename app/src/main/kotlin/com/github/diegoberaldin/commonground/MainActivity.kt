@@ -35,6 +35,8 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.core.l10n.L10nHolder
 import com.github.diegoberaldin.commonground.core.l10n.repository.LocalizationRepository
+import com.github.diegoberaldin.commonground.core.utils.appversion.AppVersionRepository
+import com.github.diegoberaldin.commonground.core.utils.getByInjection
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.domain.settings.SettingsRepository
 import com.github.diegoberaldin.commonground.feature.drawer.DrawerContent
@@ -52,6 +54,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        val appVersionRepository = getByInjection<AppVersionRepository>()
+        appVersionRepository.setAppVersion(
+            value = buildString {
+                append(BuildConfig.VERSION_NAME)
+                append(" (")
+                append(BuildConfig.VERSION_CODE)
+                append(")")
+            },
+        )
+
         setContent {
             val defaultTheme = if (isSystemInDarkTheme()) {
                 UiTheme.Dark

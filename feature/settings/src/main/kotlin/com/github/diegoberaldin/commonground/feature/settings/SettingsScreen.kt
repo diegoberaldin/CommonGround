@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Style
@@ -67,17 +68,20 @@ fun SettingsScreen(
                 scrollBehavior = topAppBarScrollBehavior,
                 navigationIcon = {
                     Icon(
-                        modifier = Modifier.clickable {
-                            coroutineScope.launch {
-                                drawerCoordinator.send(DrawerEvent.Toggle)
-                            }
-                        },
+                        modifier = Modifier
+                            .padding(Spacing.xxs)
+                            .clickable {
+                                coroutineScope.launch {
+                                    drawerCoordinator.send(DrawerEvent.Toggle)
+                                }
+                            },
                         imageVector = Icons.Default.Menu,
                         contentDescription = null,
                     )
                 },
                 title = {
                     Text(
+                        modifier = Modifier.padding(start = Spacing.xs),
                         text = "menu_item_settings".localized(),
                         style = MaterialTheme.typography.titleLarge,
                     )
@@ -132,6 +136,15 @@ fun SettingsScreen(
                     onTap = {
                         resizeModeBottomSheetOpen = true
                     }
+                )
+
+                SettingsHeader(
+                    icon = Icons.Default.BugReport,
+                    title = "settings_header_debug".localized(),
+                )
+                SettingsRow(
+                    title = "settings_item_version".localized(),
+                    value = uiState.version,
                 )
             }
         }
