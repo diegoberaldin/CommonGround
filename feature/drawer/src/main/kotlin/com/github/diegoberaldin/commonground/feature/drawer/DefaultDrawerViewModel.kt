@@ -7,7 +7,6 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageSourceDescriptor
 import com.github.diegoberaldin.commonground.domain.imagesource.repository.SourceInfoRepository
 import com.github.diegoberaldin.commonground.domain.imagesource.usecase.CreateInitialSourcesUseCase
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -24,11 +23,21 @@ class DefaultDrawerViewModel(
         initial = DrawerViewModel.State(),
     ) {
 
+    private var firstLoad = true
+
     override fun onCreate() {
         viewModelScope.launch {
             createInitialSources()
 
             sourceInfoRepository.observeAll().onEach { sources ->
+                if (firstLoad) {
+                    firstLoad = false
+                    val source = sources.firstOrNull()
+                    if (source != null) {
+                        drawerCoordinator.changeSection(DrawerSection.ImageList(source))
+                    }
+                }
+
                 updateState {
                     it.copy(
                         sources = sources.map { sourceInfo ->
@@ -38,13 +47,6 @@ class DefaultDrawerViewModel(
                     )
                 }
             }.launchIn(this)
-
-            if (drawerCoordinator.section.value == null) {
-                // set first source at startup
-                sourceInfoRepository.observeAll().first().firstOrNull()?.also { source ->
-                    drawerCoordinator.changeSection(DrawerSection.ImageList(source))
-                }
-            }
         }
     }
 
