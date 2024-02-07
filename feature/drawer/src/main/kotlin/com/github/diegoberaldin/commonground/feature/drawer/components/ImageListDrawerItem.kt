@@ -13,7 +13,7 @@ import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoM
 
 @Composable
 internal fun ImageListDrawerItem(
-    sourceInfo: SourceInfoModel,
+    source: SourceInfoModel,
     modifier: Modifier = Modifier,
     active: Boolean = false,
     onSelected: (() -> Unit)? = null,
@@ -25,14 +25,19 @@ internal fun ImageListDrawerItem(
                 verticalArrangement = Arrangement.spacedBy(Spacing.xs),
             ) {
                 Text(
-                    text = sourceInfo.name,
+                    text = source.name,
                     style = MaterialTheme.typography.titleMedium,
                 )
 
-                Text(
-                    text = sourceInfo.type.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Light),
-                )
+                if (source.description.isNotEmpty()) {
+                    Text(
+                        text = source.description,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Light,
+                        ),
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.75f)
+                    )
+                }
             }
         },
         selected = active,

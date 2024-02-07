@@ -2,6 +2,7 @@ package com.github.diegoberaldin.commonground.feature.settings.configsources
 
 import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
+import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageSourceDescriptor
 import com.github.diegoberaldin.commonground.domain.imagesource.data.SourceInfoModel
 import com.github.diegoberaldin.commonground.domain.imagesource.repository.SourceInfoRepository
 import com.github.diegoberaldin.commonground.domain.imagesource.usecase.ResetSourcesUseCase
@@ -14,6 +15,7 @@ import org.koin.android.annotation.KoinViewModel
 internal class DefaultConfigSourcesViewModel(
     private val sourceInfoRepository: SourceInfoRepository,
     private val resetSources: ResetSourcesUseCase,
+    private val sourceDescriptor: ImageSourceDescriptor,
 ) : ConfigSourcesViewModel,
     DefaultMviModel<ConfigSourcesViewModel.Intent, ConfigSourcesViewModel.State, ConfigSourcesViewModel.Event>(
         initial = ConfigSourcesViewModel.State(),
@@ -23,7 +25,14 @@ internal class DefaultConfigSourcesViewModel(
         super.onCreate()
         viewModelScope.launch {
             sourceInfoRepository.observeAll().onEach { list ->
-                updateState { it.copy(sources = list) }
+                updateState {
+                    it.copy(
+                        sources = list.map { source ->
+                            val description = sourceDescriptor.getDescription(source)
+                            source.copy(description = description)
+                        }
+                    )
+                }
             }.launchIn(this)
         }
     }
