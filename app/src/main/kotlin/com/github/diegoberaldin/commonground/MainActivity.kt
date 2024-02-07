@@ -84,6 +84,10 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(lang) {
                 l10n.changeLanguage(lang)
             }
+            val langState by l10n.currentLanguage.collectAsState()
+            LaunchedEffect(langState) {
+                // trigger a recomposition on language change
+            }
 
             CommonGroundTheme {
                 Surface(

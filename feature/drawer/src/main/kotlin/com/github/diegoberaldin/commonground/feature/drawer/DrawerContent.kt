@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -15,22 +16,38 @@ import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordina
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerEvent
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
 import com.github.diegoberaldin.commonground.core.l10n.localized
+import com.github.diegoberaldin.commonground.core.l10n.repository.LocalizationRepository
 import com.github.diegoberaldin.commonground.core.utils.injectViewModel
 import com.github.diegoberaldin.commonground.core.utils.rememberByInjection
 import com.github.diegoberaldin.commonground.feature.drawer.components.ImageListDrawerItem
 import com.github.diegoberaldin.commonground.feature.drawer.components.StaticDrawerItem
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
 fun DrawerContent(
     modifier: Modifier = Modifier,
 ) {
-    val model : DrawerViewModel = injectViewModel<DefaultDrawerViewModel>()
+    val model: DrawerViewModel = injectViewModel<DefaultDrawerViewModel>()
     model.BindToLifecycle()
     val uiState by model.uiState.collectAsState()
     val drawerCoordinator = rememberByInjection<DrawerCoordinator>()
     val currentSection by drawerCoordinator.section.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+    val l10n = rememberByInjection<LocalizationRepository>()
+
+    // language workaround
+    LaunchedEffect(l10n) {
+        l10n.currentLanguage.onEach {
+            val oldSection = drawerCoordinator.section.value
+            drawerCoordinator.changeSection(null)
+            delay(50)
+           drawerCoordinator.changeSection(oldSection)
+        }.launchIn(this)
+    }
+
 
     LazyColumn(
         modifier = modifier,

@@ -9,10 +9,11 @@ internal class DefaultLocalizationRepository(
     private val localization: Localization,
 ) : LocalizationRepository {
 
-    override val currentLanguage = MutableStateFlow(localization.get("lang"))
+    override val currentLanguage = MutableStateFlow("")
 
     override fun changeLanguage(lang: String) {
         localization.setLanguage(lang)
+        currentLanguage.value = lang
     }
 
     override fun get(key: String): String = localization.get(key)
