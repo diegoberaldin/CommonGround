@@ -55,7 +55,7 @@ fun DrawerContent(
         items(uiState.sources) { source ->
             ImageListDrawerItem(
                 modifier = Modifier.fillMaxWidth(),
-                sourceInfo = source,
+                source = source,
                 active = (currentSection as? DrawerSection.ImageList)?.source == source,
                 onSelected = {
                     drawerCoordinator.changeSection(DrawerSection.ImageList(source))

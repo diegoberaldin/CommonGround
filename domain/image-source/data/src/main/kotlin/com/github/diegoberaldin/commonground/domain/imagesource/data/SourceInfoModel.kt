@@ -9,4 +9,5 @@ data class SourceInfoModel(
     val name: String,
     val type: SourceType,
     val config: String = "",
+    val description: String = "",
 ) : Parcelable

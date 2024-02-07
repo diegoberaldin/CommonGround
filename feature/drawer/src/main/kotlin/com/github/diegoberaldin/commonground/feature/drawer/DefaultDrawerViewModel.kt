@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerCoordinator
 import com.github.diegoberaldin.commonground.core.commonui.drawer.DrawerSection
+import com.github.diegoberaldin.commonground.domain.imagefetch.fetcherapi.ImageSourceDescriptor
 import com.github.diegoberaldin.commonground.domain.imagesource.repository.SourceInfoRepository
 import com.github.diegoberaldin.commonground.domain.imagesource.usecase.CreateInitialSourcesUseCase
 import kotlinx.coroutines.flow.first
@@ -17,6 +18,7 @@ class DefaultDrawerViewModel(
     private val createInitialSources: CreateInitialSourcesUseCase,
     private val sourceInfoRepository: SourceInfoRepository,
     private val drawerCoordinator: DrawerCoordinator,
+    private val sourceDescriptor: ImageSourceDescriptor,
 ) : DrawerViewModel,
     DefaultMviModel<DrawerViewModel.Intent, DrawerViewModel.State, DrawerViewModel.Event>(
         initial = DrawerViewModel.State(),
@@ -27,7 +29,14 @@ class DefaultDrawerViewModel(
             createInitialSources()
 
             sourceInfoRepository.observeAll().onEach { sources ->
-                updateState { it.copy(sources = sources) }
+                updateState {
+                    it.copy(
+                        sources = sources.map { sourceInfo ->
+                            val description = sourceDescriptor.getDescription(sourceInfo)
+                            sourceInfo.copy(description = description)
+                        },
+                    )
+                }
             }.launchIn(this)
 
             if (drawerCoordinator.section.value == null) {

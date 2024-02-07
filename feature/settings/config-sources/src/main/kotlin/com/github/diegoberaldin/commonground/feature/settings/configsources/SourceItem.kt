@@ -1,7 +1,9 @@
 package com.github.diegoberaldin.commonground.feature.settings.configsources
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import com.github.diegoberaldin.commonground.core.appearance.theme.IconSize
 import com.github.diegoberaldin.commonground.core.appearance.theme.Spacing
@@ -53,12 +56,25 @@ internal fun SourceItem(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
+        Column(
             modifier = Modifier.padding(start = Spacing.s),
-            text = sourceInfo.name,
-            style = MaterialTheme.typography.bodyLarge,
-            color = fullColor,
-        )
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            Text(
+                text = sourceInfo.name,
+                style = MaterialTheme.typography.bodyLarge,
+                color = fullColor,
+            )
+            if (sourceInfo.description.isNotEmpty()) {
+                Text(
+                    text = sourceInfo.description,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Light,
+                    ),
+                    color = ancillaryColor
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
