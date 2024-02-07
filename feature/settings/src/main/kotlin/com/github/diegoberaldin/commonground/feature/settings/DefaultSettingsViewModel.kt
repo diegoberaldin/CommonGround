@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.diegoberaldin.commonground.core.appearance.repository.ThemeRepository
 import com.github.diegoberaldin.commonground.core.appearance.repository.UiTheme
 import com.github.diegoberaldin.commonground.core.architecture.DefaultMviModel
+import com.github.diegoberaldin.commonground.core.utils.appversion.AppVersionRepository
 import com.github.diegoberaldin.commonground.domain.gallery.ResizeMode
 import com.github.diegoberaldin.commonground.domain.settings.SettingsRepository
 import kotlinx.coroutines.flow.launchIn
@@ -15,6 +16,7 @@ import org.koin.android.annotation.KoinViewModel
 internal class DefaultSettingsViewModel(
     private val themeRepository: ThemeRepository,
     private val settingsRepository: SettingsRepository,
+    private val appVersionRepository: AppVersionRepository,
 ) : SettingsViewModel,
     DefaultMviModel<SettingsViewModel.Intent, SettingsViewModel.State, SettingsViewModel.Event>(
         initial = SettingsViewModel.State()
@@ -23,6 +25,9 @@ internal class DefaultSettingsViewModel(
     override fun onCreate() {
         super.onCreate()
         viewModelScope.launch {
+            updateState {
+                it.copy(version = appVersionRepository.getAppVersion())
+            }
             themeRepository.theme.onEach { theme ->
                 updateState { it.copy(theme = theme ?: UiTheme.Light) }
             }.launchIn(this)

@@ -68,15 +68,18 @@ fun ConfigSourcesScreen(
             TopAppBar(
                 navigationIcon = {
                     Icon(
-                        modifier = Modifier.clickable {
-                            onBack()
-                        },
+                        modifier = Modifier
+                            .padding(Spacing.xxs)
+                            .clickable {
+                                onBack()
+                            },
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = null,
                     )
                 },
                 title = {
                     Text(
+                        modifier = Modifier.padding(start = Spacing.xs),
                         text = "settings_item_config_sources".localized(),
                         style = MaterialTheme.typography.titleLarge,
                     )

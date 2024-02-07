@@ -19,6 +19,7 @@
     <string name="message_missing_fields">Missing fields</string>
     <string name="message_operation_success">Operation completed successfully</string>
     <string name="settings_header_behavior">Behaviour</string>
+    <string name="settings_header_debug">Debug</string>
     <string name="settings_header_look_and_feel">Look and feel</string>
     <string name="resize_mode_crop">Crop</string>
     <string name="resize_mode_fit_height">Fit Height</string>
@@ -29,6 +30,7 @@
     <string name="settings_item_language">Language</string>
     <string name="settings_item_resize_mode">Image resize mode</string>
     <string name="settings_item_theme">Theme</string>
+    <string name="settings_item_version">App version</string>
     <string name="settings_theme_black">Black</string>
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_theme_light">Light</string>

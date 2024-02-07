@@ -16,6 +16,7 @@ interface SettingsViewModel :
         val theme: UiTheme = UiTheme.Dark,
         val resizeMode: ResizeMode? = null,
         val lang: String? = null,
+        val version: String = "",
     )
 
     sealed interface Event
